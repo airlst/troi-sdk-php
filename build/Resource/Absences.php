@@ -19,7 +19,7 @@ class Absences extends Resource
 	public function fetchAllAbsencesForTheCurrentEmployeeGivenStartDateAndEndDate(
 		int $start,
 		int $end,
-		?int $employeeId,
+		?int $employeeId = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllAbsencesForTheCurrentEmployeeGivenStartDateAndEndDate($start, $end, $employeeId));

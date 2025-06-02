@@ -48,19 +48,19 @@ class Contacts extends Resource
 	 * @param string $externalId <PUT SOME DESCRIPTION>
 	 */
 	public function fetchAllContacts(
-		?bool $syncItem,
-		?int $from,
-		?int $size,
-		?string $since,
-		?bool $favoritesOnly,
-		?string $contactType,
-		?string $search,
-		?string $searchField,
-		?int $withCustomFields,
-		?int $parentId,
-		?bool $isAssociatedWithCustomer,
-		?bool $onlyInactive,
-		?string $externalId,
+		?bool $syncItem = null,
+		?int $from = null,
+		?int $size = null,
+		?string $since = null,
+		?bool $favoritesOnly = null,
+		?string $contactType = null,
+		?string $search = null,
+		?string $searchField = null,
+		?int $withCustomFields = null,
+		?int $parentId = null,
+		?bool $isAssociatedWithCustomer = null,
+		?bool $onlyInactive = null,
+		?string $externalId = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllContacts($syncItem, $from, $size, $since, $favoritesOnly, $contactType, $search, $searchField, $withCustomFields, $parentId, $isAssociatedWithCustomer, $onlyInactive, $externalId));

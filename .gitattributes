@@ -9,4 +9,5 @@
 /.gitignore export-ignore
 /.env.example export-ignore
 /application export-ignore
-/phpunit.xml.dist
+/phpunit.xml.dist export-ignore
+/composer.lock export-ignore

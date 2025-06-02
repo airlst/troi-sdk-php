@@ -21,8 +21,8 @@ class AccountingEntryCollections extends Resource
 	 */
 	public function fetchAllAccountingEntryCollectionsForTheGivenClientId(
 		int $clientId,
-		?int $type,
-		?int $year,
+		?int $type = null,
+		?int $year = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllAccountingEntryCollectionsForTheGivenClientId($clientId, $type, $year));

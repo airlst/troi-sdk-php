@@ -16,7 +16,11 @@ class Customers extends Resource
 	 * @param bool $syncItem Fetch all customers for the given client ID and return them as syncItems
 	 * @param bool $isActive Fetch all active customers. If omitted, all customers are returned.
 	 */
-	public function fetchAllCustomersForTheGivenClientId(int $clientId, ?bool $syncItem, ?bool $isActive): Response
+	public function fetchAllCustomersForTheGivenClientId(
+		int $clientId,
+		?bool $syncItem = null,
+		?bool $isActive = null,
+	): Response
 	{
 		return $this->connector->send(new FetchAllCustomersForTheGivenClientId($clientId, $syncItem, $isActive));
 	}

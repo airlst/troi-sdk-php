@@ -20,10 +20,10 @@ class Suppliers extends Resource
 	 */
 	public function fetchAllSuppliersFromGivenClient(
 		int $clientId,
-		?bool $returnApiSyncItems,
-		?string $search,
-		?bool $isActive,
-		?bool $showReferenceDetails,
+		?bool $returnApiSyncItems = null,
+		?string $search = null,
+		?bool $isActive = null,
+		?bool $showReferenceDetails = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllSuppliersFromGivenClient($clientId, $returnApiSyncItems, $search, $isActive, $showReferenceDetails));

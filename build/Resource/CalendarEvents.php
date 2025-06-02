@@ -28,11 +28,11 @@ class CalendarEvents extends Resource
 	public function fetchAllCalendarEventsAtTheGivenRange(
 		string $start,
 		string $end,
-		?string $searchKey,
-		?int $ownerEmployeeId,
-		?string $type,
-		?bool $withoutAbsences,
-		?string $externalId,
+		?string $searchKey = null,
+		?int $ownerEmployeeId = null,
+		?string $type = null,
+		?bool $withoutAbsences = null,
+		?string $externalId = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllCalendarEventsAtTheGivenRange($start, $end, $searchKey, $ownerEmployeeId, $type, $withoutAbsences, $externalId));

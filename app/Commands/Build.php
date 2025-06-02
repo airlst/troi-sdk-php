@@ -54,7 +54,7 @@ class Build extends Command
         $config = new Config(
             'TroiSDK',
             self::NAMESPACE,
-            ignoredQueryParams: ['after', 'order_by', 'per_page'],
+            // ignoredQueryParams: ['after', 'order_by', 'per_page'],
         );
 
         $generator = new CodeGenerator(

@@ -29,18 +29,18 @@ class Projects extends Resource
 	 */
 	public function fetchAllProjectsFromGivenClient(
 		int $clientId,
-		?int $from,
-		?int $size,
-		?string $since,
-		?bool $syncItem,
-		?string $customerId,
-		?bool $customerIsActive,
-		?bool $projectIsInProcess,
-		mixed $projectStatusId,
-		mixed $projectTypeId,
-		?int $projectLeaderId,
-		?string $search,
-		?bool $extendedObject,
+		?int $from = null,
+		?int $size = null,
+		?string $since = null,
+		?bool $syncItem = null,
+		?string $customerId = null,
+		?bool $customerIsActive = null,
+		?bool $projectIsInProcess = null,
+		mixed $projectStatusId = null,
+		mixed $projectTypeId = null,
+		?int $projectLeaderId = null,
+		?string $search = null,
+		?bool $extendedObject = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllProjectsFromGivenClient($clientId, $from, $size, $since, $syncItem, $customerId, $customerIsActive, $projectIsInProcess, $projectStatusId, $projectTypeId, $projectLeaderId, $search, $extendedObject));

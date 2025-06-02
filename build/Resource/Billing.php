@@ -24,13 +24,13 @@ class Billing extends Resource
 	 */
 	public function fetchAllBillingsForTheGivenParameter(
 		int $clientId,
-		?int $calculationPositionId,
-		?int $projectId,
-		?int $subprojectId,
-		?string $startDate,
-		?string $endDate,
-		?bool $extendedObject,
-		?bool $fillsyncitems,
+		?int $calculationPositionId = null,
+		?int $projectId = null,
+		?int $subprojectId = null,
+		?string $startDate = null,
+		?string $endDate = null,
+		?bool $extendedObject = null,
+		?bool $fillsyncitems = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllBillingsForTheGivenParameter($clientId, $calculationPositionId, $projectId, $subprojectId, $startDate, $endDate, $extendedObject, $fillsyncitems));
@@ -47,7 +47,7 @@ class Billing extends Resource
 	 * @param int $id Fetch Billing for the given Billing ID
 	 * @param bool $extendedObject extended object contains the full calculation position display path
 	 */
-	public function fetchBillingForTheGivenBillingId(int $id, ?bool $extendedObject): Response
+	public function fetchBillingForTheGivenBillingId(int $id, ?bool $extendedObject = null): Response
 	{
 		return $this->connector->send(new FetchBillingForTheGivenBillingId($id, $extendedObject));
 	}

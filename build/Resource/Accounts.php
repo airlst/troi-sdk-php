@@ -19,8 +19,8 @@ class Accounts extends Resource
 	 */
 	public function fetchAllAccountsForTheGivenClientId(
 		int $clientId,
-		?int $accountGroupId,
-		?bool $accountIsCashOrBank,
+		?int $accountGroupId = null,
+		?bool $accountIsCashOrBank = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllAccountsForTheGivenClientId($clientId, $accountGroupId, $accountIsCashOrBank));

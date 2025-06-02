@@ -16,7 +16,7 @@ class CalendarEventParticipants extends Resource
 	 * @param int $calendarEventId Fetch all calendar event participants for the given calendar event ID
 	 * @param int $employeeId Fetch all calendar event participants for the given employee ID
 	 */
-	public function fetchAllCalendarEventParticipants(?int $calendarEventId, ?int $employeeId): Response
+	public function fetchAllCalendarEventParticipants(?int $calendarEventId = null, ?int $employeeId = null): Response
 	{
 		return $this->connector->send(new FetchAllCalendarEventParticipants($calendarEventId, $employeeId));
 	}

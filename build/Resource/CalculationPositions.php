@@ -30,17 +30,17 @@ class CalculationPositions extends Resource
 	 */
 	public function fetchAllCalculationPositionsForTheGivenClientId(
 		int $clientId,
-		?int $projectId,
-		?int $subprojectId,
-		?string $search,
-		?bool $timeRecording,
-		?bool $favoritesOnly,
-		?bool $withoutHourClosed,
-		?string $reeDate,
-		?int $projectStatusId,
-		?bool $bookKeeping,
-		?string $projectIds,
-		?string $issueTrackerProjectKey,
+		?int $projectId = null,
+		?int $subprojectId = null,
+		?string $search = null,
+		?bool $timeRecording = null,
+		?bool $favoritesOnly = null,
+		?bool $withoutHourClosed = null,
+		?string $reeDate = null,
+		?int $projectStatusId = null,
+		?bool $bookKeeping = null,
+		?string $projectIds = null,
+		?string $issueTrackerProjectKey = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllCalculationPositionsForTheGivenClientId($clientId, $projectId, $subprojectId, $search, $timeRecording, $favoritesOnly, $withoutHourClosed, $reeDate, $projectStatusId, $bookKeeping, $projectIds, $issueTrackerProjectKey));

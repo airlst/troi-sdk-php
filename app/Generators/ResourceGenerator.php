@@ -126,13 +126,19 @@ class ResourceGenerator extends Generator
     {
         $name = NameHelper::safeVariableName($parameter->name);
 
-        $method
-            ->addComment(
-                trim(sprintf('@param %s $%s %s', $parameter->type, $name, $parameter->description))
-            )
-            ->addParameter($name)
-            ->setType($parameter->type)
-            ->setNullable($parameter->nullable);
+        $property =
+            $method
+                ->addComment(
+                    trim(sprintf('@param %s $%s %s', $parameter->type, $name, $parameter->description))
+                )
+                ->addParameter($name);
+
+        $property->setType($parameter->type);
+
+        if ($parameter->nullable) {
+            $property->setNullable()
+                ->setDefaultValue(null);
+        }
 
         return $method;
     }

@@ -18,7 +18,12 @@ class Categories extends Resource
 	 * @param int $size Fetch contact categories for the given size use together with "from"
 	 * @param int $from Fetch contact category from the given ID use together with "size"
 	 */
-	public function fetchAllContactCategories(?int $contactId, ?int $categoryId, ?int $size, ?int $from): Response
+	public function fetchAllContactCategories(
+		?int $contactId = null,
+		?int $categoryId = null,
+		?int $size = null,
+		?int $from = null,
+	): Response
 	{
 		return $this->connector->send(new FetchAllContactCategories($contactId, $categoryId, $size, $from));
 	}

@@ -20,9 +20,9 @@ class AccountingEntries extends Resource
 	 */
 	public function fetchAllAccountingEntriesForTheGivenClientId(
 		int $clientId,
-		?int $cpId,
-		?int $projectId,
-		?int $accountingEntryCollectionId,
+		?int $cpId = null,
+		?int $projectId = null,
+		?int $accountingEntryCollectionId = null,
 	): Response
 	{
 		return $this->connector->send(new FetchAllAccountingEntriesForTheGivenClientId($clientId, $cpId, $projectId, $accountingEntryCollectionId));
