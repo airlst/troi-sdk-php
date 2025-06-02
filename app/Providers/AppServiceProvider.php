@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Troi\V2\SDKBuilder\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

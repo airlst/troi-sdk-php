@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Troi\V2\SDKBuilder\Tests;
 
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;

@@ -1,0 +1,6848 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Troi API",
+    "version": "2.0.0",
+    "description": "This is the official API documentation of Troi.\n\n# Authentication\n\nTroi offers basic auth for authentication.\n\n<security-definitions />\n",
+    "contact": {
+      "email": "helpdesk@troi.de"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about the troi api",
+    "url": "https://troi-software.atlassian.net/wiki/spaces/TG/pages/821074/TROI+API"
+  },
+  "servers": [
+    {
+      "url": "https://{customer}.troi.software/api/v2/rest",
+      "variables": {
+        "customer": {
+          "default": "demo",
+          "description": "Customer Name assigned by the client"
+        }
+      }
+    },
+    {
+      "url": "http://{host}/api/v2/rest",
+      "variables": {
+        "host": {
+          "default": "troi.local",
+          "description": "Customer Host assigned by the client"
+        }
+      }
+    },
+    {
+      "url": "https://{host}/api/v2/rest",
+      "variables": {
+        "host": {
+          "default": "troi.lan",
+          "description": "Customer Host assigned by the client"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/absences": {
+      "get": {
+        "tags": [
+          "absences"
+        ],
+        "summary": "Fetch all absences for the current employee given Start Date and End Date",
+        "description": "Fetch all absences for the current employee given Start Date and End Date",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 20190401
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 20190401
+            }
+          },
+          {
+            "name": "employeeId",
+            "in": "query",
+            "description": "Employee id",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 33
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiAbsence"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "absences"
+        ],
+        "summary": "Save Absence object",
+        "description": "Save Absence object",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Start",
+                      "End",
+                      "absenceType",
+                      "Employee"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiAbsence"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/absences/{id}": {
+      "get": {
+        "tags": [
+          "absences"
+        ],
+        "summary": "Fetch Absence for the given Absence ID",
+        "description": "Fetch Absence for the given Absence ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Absence id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiAbsence"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "absences"
+        ],
+        "summary": "Update Absence object",
+        "description": "Update Absence object",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Absence id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Start",
+                      "End",
+                      "absenceType",
+                      "Employee",
+                      "Id",
+                      "id",
+                      "Path"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiAbsence"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/accountGroups": {
+      "get": {
+        "tags": [
+          "accountGroups"
+        ],
+        "summary": "Fetch all account groups for the given clientId",
+        "description": "Fetch all account groups for the given clientId",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiAccountGroup"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "accountGroups"
+        ],
+        "summary": "Save account groups object",
+        "description": "Save account groups object",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Name",
+                      "Client"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiAccountGroup"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/accountGroups/{id}": {
+      "get": {
+        "tags": [
+          "accountGroups"
+        ],
+        "summary": "Fetch Account Group for the given Account Group ID",
+        "description": "Fetch Account Group for the given Account Group ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account Group id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiAccountGroup"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "accountGroups"
+        ],
+        "summary": "Update Account Groups Object",
+        "description": "Update Account Groups Object",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account group id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Name",
+                      "Client",
+                      "Id",
+                      "id",
+                      "Path"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiAccountGroup"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "accountGroups"
+        ],
+        "summary": "Delete Absence Groups",
+        "description": "Delete Absence Groups",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account Group id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/accountingEntries": {
+      "get": {
+        "tags": [
+          "accountingEntries"
+        ],
+        "summary": "Fetch all Accounting Entries for the given clientId",
+        "description": "Fetch all Accounting Entries for the given clientId",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Client id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "cpId",
+            "in": "query",
+            "description": "Fetch all Accounting Entries for the given CalculationPosition ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Fetch all Accounting Entries for the given Project ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "accountingEntryCollectionId",
+            "in": "query",
+            "description": "Fetch all Accounting Entries for the given AccountingEntryCollection ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiAccountingEntry"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "accountingEntries"
+        ],
+        "summary": "Save Accounting Entry Object",
+        "description": "Save Accounting Entry Object",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Client",
+                      "Account",
+                      "ContraAccount",
+                      "AccountingEntryCollection",
+                      "TaxRate",
+                      "CalculationPosition",
+                      "PaymentTerm"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiAccountingEntry"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/accountingEntries/{id}": {
+      "get": {
+        "tags": [
+          "accountingEntries"
+        ],
+        "summary": "Fetch Accounting Entry for the given Accounting Entry ID",
+        "description": "Fetch Accounting Entry for the given Accounting Entry ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Accounting entry id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiAccountingEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "accountingEntries"
+        ],
+        "summary": "Update Accounting Entry Object",
+        "description": "Update Accounting Entry Object",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Accounting entry id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Client",
+                      "Account",
+                      "ContraAccount",
+                      "AccountingEntryCollection",
+                      "CalculationPosition",
+                      "TaxRate",
+                      "PaymentTerm",
+                      "Id",
+                      "id",
+                      "Path"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiAccountingEntry"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "accountingEntries"
+        ],
+        "summary": "Delete Accounting Entry",
+        "description": "Delete Accounting Entry",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Accounting entry id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/accountingEntryCollections": {
+      "get": {
+        "tags": [
+          "accountingEntryCollections"
+        ],
+        "summary": "Fetch all accounting entry collections for the given clientId",
+        "description": "Fetch all accounting entry collections for the given clientId",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Fetch all accounting entry collections for the given clientId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Fetch all accounting entry collections for the given type\n0 = export collections\n1 = import collections\n",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 0,
+              "enum": [
+                0,
+                1
+              ]
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Fetch all accounting entry collections for the given year",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 2019
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiAccountingEntryCollection"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "accountingEntryCollections"
+        ],
+        "summary": "Save accounting entry collections",
+        "description": "Save accounting entry collections",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Client",
+                      "FromDate",
+                      "TillDate",
+                      "Type"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiAccountingEntryCollection"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/accountingEntryCollections/{id}": {
+      "get": {
+        "tags": [
+          "accountingEntryCollections"
+        ],
+        "summary": "Fetch accounting entry collection for the given accounting entry collection ID",
+        "description": "Fetch accounting entry collection for the given accounting entry collection ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Accounting entry collection id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiAccountingEntryCollection"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "accountingEntryCollections"
+        ],
+        "summary": "Update accounting entry collection",
+        "description": "Update accounting entry collection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Accounting entry collection id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiAccountingEntryCollection"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "accountingEntryCollections"
+        ],
+        "summary": "Delete accounting entry collection",
+        "description": "Delete accounting entry collection",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Accounting entry collection id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/accounts": {
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Fetch all Accounts for the given clientId",
+        "description": "Fetch all Accounts for the given clientId",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Fetch all Accounts for the given clientId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "accountGroupId",
+            "in": "query",
+            "description": "Fetch all Accounts for the given accountGroupId",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "account_is_cash_or_bank",
+            "in": "query",
+            "description": "Fetch all Accounts for the given account_is_cash_or_bank flag",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiAccount"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Save Account",
+        "description": "Save Account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Client",
+                      "AccountGroup",
+                      "Name",
+                      "Number"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiAccount"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/accounts/{id}": {
+      "get": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Fetch Account given Account ID",
+        "description": "Fetch Account given Account ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Update Account",
+        "description": "Update Account",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiAccount"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Delete Account",
+        "description": "Delete Account",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Account id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/billings/hours": {
+      "get": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Fetch all billings for the given parameter",
+        "description": "Fetch all billings for the given parameter",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "employeeId or calculationPositionId or projectId or subprojectId or startDate+endDate is mandatory",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "calculationPositionId",
+            "in": "query",
+            "description": "Fetch all billings for the given calculation position ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Fetch all billings for the given project ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "subprojectId",
+            "in": "query",
+            "description": "Fetch all billings for the given subproject ID",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Fetch all billings for the given start date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": 20160101
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Fetch all billings for the given end date",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": 20160120
+            }
+          },
+          {
+            "name": "extendedObject",
+            "in": "query",
+            "description": "extended object contains the full calculation position display path",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "fillsyncitems",
+            "in": "query",
+            "description": "Fetch all billings and fill the empty objects if there are any",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiHourBilling"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Save Billing",
+        "description": "Save Billing",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Date",
+                      "Quantity",
+                      "Client",
+                      "CalculationPosition",
+                      "Employee"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiHourBilling"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/billings/hours/{id}": {
+      "get": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Fetch Billing for the given Billing ID",
+        "description": "Fetch Billing for the given Billing ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch Billing for the given Billing ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "extendedObject",
+            "in": "query",
+            "description": "extended object contains the full calculation position display path",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiHourBilling"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Update Billing",
+        "description": "Update Billing",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Billing id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Date",
+                      "Quantity",
+                      "Client",
+                      "CalculationPosition",
+                      "Employee",
+                      "Id",
+                      "Path",
+                      "id"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiHourBilling"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "billing"
+        ],
+        "summary": "Delete Billing",
+        "description": "Delete Billing",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Billing id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/bookingYears": {
+      "get": {
+        "tags": [
+          "bookingYear"
+        ],
+        "summary": "Fetch all Booking Years for the given client ID",
+        "description": "Fetch all Booking Years for the given client ID",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Fetch all Booking Years for the given client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiBookingYear"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "bookingYear"
+        ],
+        "summary": "Save Booking Year",
+        "description": "Save Booking Year",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Client",
+                      "Year"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiBookingYear"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/bookingYears/{id}": {
+      "get": {
+        "tags": [
+          "bookingYear"
+        ],
+        "summary": "Fetch Booking Year for the given ID",
+        "description": "Fetch Booking Year for the given ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch Billing for the given Billing ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiBookingYear"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "bookingYear"
+        ],
+        "summary": "Update Booking Year",
+        "description": "Update Booking Year",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Booking Year id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiBookingYear"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "bookingYear"
+        ],
+        "summary": "Delete Booking Year",
+        "description": "Delete Booking Year",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Booking Year id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/calculationPositions": {
+      "get": {
+        "tags": [
+          "calculationPositions"
+        ],
+        "summary": "Fetch all calculation positions for the given client ID",
+        "description": "Fetch all calculation Positions for the given client ID",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Fetch all calculation positions for the given client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Fetch all calculation positions for the given project ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "subprojectId",
+            "in": "query",
+            "description": "Fetch all calculation positions for the given subproject ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Fetch all calculation positions for the given search term",
+            "schema": {
+              "type": "string",
+              "example": "Car"
+            }
+          },
+          {
+            "name": "timeRecording",
+            "in": "query",
+            "description": "returns on valid time recording positions for the user",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "favoritesOnly",
+            "in": "query",
+            "description": "returns on favorite time recording positions for the user",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "withoutHourClosed",
+            "in": "query",
+            "description": "returns only cp that are not closed for time recording",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "ree_date",
+            "in": "query",
+            "description": "return rest expenses estimation for the given calculation position\n\nFormat: yyyymmdd OR dd.mm.yyyy OR current_date\n",
+            "schema": {
+              "type": "string",
+              "example": "20190101"
+            }
+          },
+          {
+            "name": "projectStatusId",
+            "in": "query",
+            "description": "Fetch all calculation positions for the given project status ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "bookKeeping",
+            "in": "query",
+            "description": "Fetch all calculation positions for the given book keeping",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "projectIds",
+            "in": "query",
+            "description": "Fetch all calculation positions for the given project IDs",
+            "schema": {
+              "type": "string",
+              "example": "1,2,3"
+            }
+          },
+          {
+            "name": "issueTrackerProjectKey",
+            "in": "query",
+            "description": "Fetch all calculation positions for the given issue tracker project key",
+            "schema": {
+              "type": "string",
+              "example": "TROI-12345"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiCalculationPosition"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "calculationPositions"
+        ],
+        "summary": "Save Calculation Position",
+        "description": "Save Calculation Position",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "IsExternalService",
+                      "IsBillable"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiCalculationPosition"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/calculationPositions/{id}": {
+      "get": {
+        "tags": [
+          "calculationPositions"
+        ],
+        "summary": "Fetch calculation position for the given calculation position ID",
+        "description": "Fetch calculation position for the given calculation position ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch calculation position for the given calculation position ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiCalculationPosition"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "calculationPositions"
+        ],
+        "summary": "Update calculation position",
+        "description": "Update calculation position",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Calculation position ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiCalculationPosition"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "calculationPositions"
+        ],
+        "summary": "Delete calculation position",
+        "description": "Delete calculation position",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Calculation position ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/calendarEvents": {
+      "get": {
+        "tags": [
+          "calendarEvents"
+        ],
+        "summary": "Fetch all calendar events at the given range",
+        "description": "Fetch all calendar events at the given range",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date (`YYYYMMDD`)",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": 20200101
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": true,
+            "description": "End date (`YYYYMMDD`)",
+            "schema": {
+              "type": "string",
+              "example": 20201231
+            }
+          },
+          {
+            "name": "search_key",
+            "in": "query",
+            "description": "Search in calendar events for string",
+            "schema": {
+              "type": "string",
+              "example": "meeting"
+            }
+          },
+          {
+            "name": "owner_employee_id",
+            "in": "query",
+            "description": "Employee owner",
+            "schema": {
+              "type": "integer",
+              "example": 33
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Calendar event type\n\n`R`=regular, `H`=holiday, `G`=general, `P`=private, `T`=assigment\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "R",
+                "H",
+                "G",
+                "P",
+                "T"
+              ],
+              "example": "R"
+            }
+          },
+          {
+            "name": "withoutAbsences",
+            "in": "query",
+            "description": "Return calendar event list without absences",
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "ID of a system connected to Troi to simplify synchronization process",
+            "schema": {
+              "type": "string",
+              "example": "12345678-90AB-CDEF-1234-567890ABCDEF"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiCalendarEvent"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "calendarEvents"
+        ],
+        "summary": "Save calendar event",
+        "description": "Save calendar event",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Start",
+                      "End",
+                      "Subject",
+                      "Owner"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiCalendarEvent"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/calendarEvents/{id}": {
+      "get": {
+        "tags": [
+          "calendarEvents"
+        ],
+        "summary": "Fetch calendar event for the given calendar event ID",
+        "description": "Fetch calendar event for the given calendar event ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch calendar event for the given calendar event ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiCalendarEvent"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "calendarEvents"
+        ],
+        "summary": "Update calendar event",
+        "description": "Update calendar event",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Calendar event ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiCalendarEvent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "calendarEvents"
+        ],
+        "summary": "Delete calendar event",
+        "description": "Delete calendar event",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Calendar event ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/calendarEventsByExternalId/{id}": {
+      "get": {
+        "tags": [
+          "calendarEvents"
+        ],
+        "summary": "Fetch calendar event for the given calendar event by external ID",
+        "description": "Fetch calendar event for the given calendar event by external ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "external calendar event ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiCalendarEvent"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "calendarEvents"
+        ],
+        "summary": "Update calendar event by external ID",
+        "description": "Update calendar event by external ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "external calendar event ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiCalendarEvent"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/projects": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Fetch all projects from given client",
+        "description": "Fetch all projects from given client",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and start with given project ID, use togehter with \"size\"",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and start with given project ID, use togehter with \"from\"",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and given date, only items modified since ETag will be returned",
+            "schema": {
+              "type": "string",
+              "example": 20110722153556
+            }
+          },
+          {
+            "name": "syncItem",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and set syncitems \"true\" to return ApiSyncItems",
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and given customer ID",
+            "schema": {
+              "type": "string",
+              "example": 1
+            }
+          },
+          {
+            "name": "customerIsActive",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and given parameter, set to \"true\" to get only projects of active customers",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "projectIsInProcess",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and given parameter, set to \"true\" to get only \"in process\" projects",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "projectStatusId",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and given project status ID",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "example": 1
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "projectTypeId",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and given project type ID",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "integer",
+                  "example": 1
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "projectLeaderId",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and given leader ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and givenSearch Term",
+            "schema": {
+              "type": "string",
+              "example": "Website"
+            }
+          },
+          {
+            "name": "extendedObject",
+            "in": "query",
+            "description": "Fetch all projects for the given client ID and extend it with real objects instead of sync item",
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiProject"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Save project",
+        "description": "Save project",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Client",
+                      "Customer",
+                      "Status"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiProject"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/projects/{id}": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Fetch project for the given project ID",
+        "description": "Fetch project for the given project ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch project for the project ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiProject"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Update project",
+        "description": "Update project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiProject"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Delete project",
+        "description": "Delete project",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Project ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/calendarEventParticipants": {
+      "get": {
+        "tags": [
+          "calendarEventParticipants"
+        ],
+        "summary": "Fetch all calendar event participants",
+        "description": "Fetch all calendar event participants",
+        "parameters": [
+          {
+            "name": "calendarEventId",
+            "in": "query",
+            "description": "Fetch all calendar event participants for the given calendar event ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "employeeId",
+            "in": "query",
+            "description": "Fetch all calendar event participants for the given employee ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiCalendarEventParticipant"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "calendarEventParticipants"
+        ],
+        "summary": "Save calendar event participants",
+        "description": "Save calendar event participants",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "CalendarEvent",
+                      "Employee"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiCalendarEventParticipant"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/calendarEventParticipants/{id}": {
+      "get": {
+        "tags": [
+          "calendarEventParticipants"
+        ],
+        "summary": "Fetch calendar event participant for the given calendar event participant ID",
+        "description": "Fetch calendar event participant for the given calendar event participant ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch calendar event participant for the given calendar event participant ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiCalendarEventParticipant"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "calendarEventParticipants"
+        ],
+        "summary": "Update calendar event participant",
+        "description": "Update calendar event participant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Calendar event participant ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiCalendarEventParticipant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "calendarEventParticipants"
+        ],
+        "summary": "Delete calendar event participant",
+        "description": "Delete calendar event participant",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Calendar event participant ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/clients": {
+      "get": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Fetch all Tenants (formerly Clients)",
+        "description": "Fetch all Tenants (formerly Clients)",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiClient"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/clients/{id}": {
+      "get": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Fetch client for the given client ID",
+        "description": "Fetch client for the given client ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch client for the given client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiClient"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/contacts": {
+      "get": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Fetch all contacts",
+        "description": "Fetch all contacts",
+        "parameters": [
+          {
+            "name": "syncItem",
+            "in": "query",
+            "description": "Fetch Contacts and return them as Sync Item",
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Fetch Contacts from the given ID, use togehter with \"from\"",
+            "schema": {
+              "type": "integer",
+              "example": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Fetch Contacts for the given size use together with \"size\"",
+            "schema": {
+              "type": "integer",
+              "example": 100
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "description": "Fetch Contacts for the given date time (only items modified since ETag will be returned)",
+            "schema": {
+              "type": "string",
+              "example": 0
+            }
+          },
+          {
+            "name": "favoritesOnly",
+            "in": "query",
+            "description": "Fetch favorites Contacts only",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "contactType",
+            "in": "query",
+            "description": "Fetch Contacts for the given Contact Type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ApiContact:Person",
+                "ApiContact:Department",
+                "ApiContact:Company"
+              ],
+              "example": "ApiContact:Person"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Fetch Contacts for the given Search Term",
+            "schema": {
+              "type": "string",
+              "example": "Troi"
+            }
+          },
+          {
+            "name": "searchField",
+            "in": "query",
+            "description": "Fetch Contacts for the given Search Field\n\nsingle value:\nsearchField={\"categoryId\":392}\n\nmultiple values:\nsearchField={\"categoryId\":[392,396]}\n\navailable search options:\n`categoryId` - string|array\n`firstName` - string\n`middleName` - string\n`lastName` - string\n`fullName` - string\n`privateEmail` - string\n`officeEmail` - string\n`companyEmail` - string\n`isDeleted` - bool\n",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "withCustomFields",
+            "in": "query",
+            "description": "Fetch Contacts for the given with Custom Field",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "parentId",
+            "in": "query",
+            "description": "Fetch Contacts for the given parent ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "isAssociatedWithCustomer",
+            "in": "query",
+            "description": "show all contacts that associated with some customer",
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          },
+          {
+            "name": "onlyInactive",
+            "in": "query",
+            "description": "show all inactive contacts",
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "<PUT SOME DESCRIPTION>",
+            "schema": {
+              "type": "string",
+              "example": "12345678-90AB-CDEF-1234-567890ABCDEF"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiContact"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Save contact",
+        "description": "Save contact",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Type",
+                      "Name1"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiContact"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/contacts/{id}": {
+      "get": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Fetch contact for the given ID",
+        "description": "Fetch contact for the given ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch contact for the given ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiContact"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Update contact",
+        "description": "Update contact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contact ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiContact"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Delete contact",
+        "description": "Delete contact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contact ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/contactAccessGroups": {
+      "get": {
+        "tags": [
+          "contactAccessGroups"
+        ],
+        "summary": "Fetch all access groups for contacts",
+        "description": "Fetch all access groups for contacts",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Id": {
+                        "type": "integer"
+                      },
+                      "Description": {
+                        "type": "string",
+                        "example": "Administrator"
+                      },
+                      "ClassName": {
+                        "type": "string",
+                        "example": "ApiEmployeeAccessGroup"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/contactCategories": {
+      "get": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Fetch all contact categories",
+        "description": "Fetch all contact categories",
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "query",
+            "description": "Fetch all contact categories for the given contact ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "description": "Fetch all contact categories for the given category ID",
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Fetch contact categories for the given size use together with \"from\"",
+            "schema": {
+              "type": "integer",
+              "example": 50
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Fetch contact category from the given ID use together with \"size\"",
+            "schema": {
+              "type": "integer",
+              "example": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiContactCategory"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Save contact category",
+        "description": "Save contact category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Contact",
+                      "Category"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiContactCategory"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/contactCategories/{id}": {
+      "get": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Fetch contact categorie by ID",
+        "description": "Fetch contact categorie by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch contact categorie by ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiContactCategory"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Update contact categorie",
+        "description": "Update contact categorie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contact categorie ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiContactCategory"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Delete contact categorie",
+        "description": "Delete contact categorie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Contact categorie ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/contactsByExternalId/{id}": {
+      "get": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Fetch contact by external ID",
+        "description": "Fetch contact by external ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "external contact ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiContact"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Update contact by external ID",
+        "description": "Update contact by external ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "external contact ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiContact"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "contacts"
+        ],
+        "summary": "Delete contact by external ID",
+        "description": "Delete contact by external ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "external contact ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "integer",
+                  "example": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/customers": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Fetch all customers for the given client ID",
+        "description": "Fetch all customers for the given client ID",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "syncItem",
+            "in": "query",
+            "description": "Fetch all customers for the given client ID and return them as syncItems",
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "description": "Fetch all active customers. If omitted, all customers are returned.",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiCustomer"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Save customer",
+        "description": "Save customer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Client",
+                      "Name"
+                    ]
+                  },
+                  {
+                    "$ref": "#/components/schemas/ApiCustomer"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Fetch customer for the given customer ID",
+        "description": "Fetch customer for the given customer ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch customer for the given customer ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiCustomer"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "customers"
+        ],
+        "summary": "Update customer",
+        "description": "Update customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Customer ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiCustomer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/suppliers": {
+      "get": {
+        "tags": [
+          "suppliers"
+        ],
+        "summary": "Fetch all suppliers from given client",
+        "description": "Fetch all suppliers from given client",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "query",
+            "description": "Client ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          {
+            "name": "returnApiSyncItems",
+            "in": "query",
+            "description": "Fetch all suppliers for the given client ID and return them as syncItems",
+            "schema": {
+              "type": "boolean",
+              "example": false
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Fetch all suppliers for the given search term",
+            "schema": {
+              "type": "string",
+              "example": "Troi"
+            }
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "description": "Fetch all active suppliers",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          },
+          {
+            "name": "showReferenceDetails",
+            "in": "query",
+            "description": "Fetch all suppliers and return extended payment term array",
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/paths/~1suppliers~1%7Bid%7D/put/requestBody/content/application~1json/schema"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "suppliers"
+        ],
+        "summary": "Save supplier",
+        "description": "Save supplier",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "required": [
+                      "Client"
+                    ]
+                  },
+                  {
+                    "$ref": "#/paths/~1suppliers~1%7Bid%7D/put/requestBody/content/application~1json/schema"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/suppliers/{id}": {
+      "get": {
+        "tags": [
+          "suppliers"
+        ],
+        "summary": "Fetch supplier for the given supplier ID",
+        "description": "Fetch supplier for the given supplier ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Fetch supplier for the given supplier ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1suppliers~1%7Bid%7D/put/requestBody/content/application~1json/schema"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "suppliers"
+        ],
+        "summary": "Update supplier",
+        "description": "Update supplier",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Supplier ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Client": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  },
+                  "Creditor": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  },
+                  "PaymentTerm": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  },
+                  "IsActive": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "Contact": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  },
+                  "Number": {
+                    "type": "string",
+                    "example": 1
+                  },
+                  "VatNumber": {
+                    "type": "string",
+                    "example": 1
+                  },
+                  "TaxNumber": {
+                    "type": "string",
+                    "example": 1
+                  },
+                  "Name": {
+                    "type": "string",
+                    "example": "Troi GmbH"
+                  },
+                  "Id": {
+                    "type": "string",
+                    "example": "52d66bbdbb5585bb868fb050548afa3d"
+                  },
+                  "Path": {
+                    "type": "string",
+                    "example": "/suppliers/52d66bbdbb5585bb868fb050548afa3d"
+                  },
+                  "ETag": {
+                    "type": "string",
+                    "example": 20190313153646
+                  },
+                  "IsDeleted": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "ClassName": {
+                    "type": "string",
+                    "example": "ApiSupplier"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ApiSyncItem"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiAbsence": {
+        "type": "object",
+        "properties": {
+          "Start": {
+            "type": "string",
+            "example": "2019-04-24 00:00:00"
+          },
+          "End": {
+            "type": "string",
+            "example": "2019-04-24 23:59:59"
+          },
+          "Subject": {
+            "type": "string",
+            "example": "Urlaub"
+          },
+          "Description": {
+            "type": "string",
+            "example": "In den Urlaub hinein!"
+          },
+          "Destination": {
+            "type": "object",
+            "example": null
+          },
+          "Employee": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "absenceType": {
+            "$ref": "#/components/schemas/ApiAbsenceType"
+          },
+          "halfDay": {
+            "type": "integer",
+            "example": 0
+          },
+          "absenceUnit": {
+            "type": "integer",
+            "example": 0
+          },
+          "absenceHours": {
+            "type": "integer",
+            "example": 8
+          },
+          "id": {
+            "type": "integer",
+            "example": 12
+          },
+          "Id": {
+            "type": "integer",
+            "example": 12
+          },
+          "Path": {
+            "type": "string",
+            "example": "/absences/12"
+          },
+          "ETag": {
+            "type": "string",
+            "example": "20190424205928"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiAbsence"
+          }
+        }
+      },
+      "ApiSyncItem": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "type": "string",
+            "example": "ApiExample"
+          },
+          "Name": {
+            "type": "string",
+            "example": "Example"
+          },
+          "IsFavorite": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsPrintable": {
+            "type": "boolean",
+            "example": false
+          },
+          "ParentPath": {
+            "type": "string",
+            "example": null
+          },
+          "ReeEmployeeId": {
+            "type": "integer",
+            "example": 0
+          },
+          "ReeCpId": {
+            "type": "integer",
+            "example": 0
+          },
+          "ReeSubProjectId": {
+            "type": "integer",
+            "example": 0
+          },
+          "ReeProjectId": {
+            "type": "integer",
+            "example": 0
+          },
+          "ReeQuantity": {
+            "type": "integer",
+            "example": 0
+          },
+          "ReeDate": {
+            "type": "object",
+            "example": null
+          },
+          "ReeServiceId": {
+            "type": "integer",
+            "example": 0
+          },
+          "id": {
+            "type": "integer",
+            "example": 33
+          },
+          "Id": {
+            "type": "integer",
+            "example": 33
+          },
+          "Path": {
+            "type": "string",
+            "example": "/exampleItem/33"
+          },
+          "ETag": {
+            "type": "integer",
+            "example": 20190424205858
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiSyncItem"
+          }
+        }
+      },
+      "ApiAbsenceType": {
+        "type": "object",
+        "properties": {
+          "absenceTypeId": {
+            "type": "integer",
+            "example": 1
+          },
+          "absenceTypeDescription": {
+            "type": "string",
+            "example": "Urlaub"
+          },
+          "absenceTypeAbbrevation": {
+            "type": "string",
+            "example": "URL"
+          },
+          "absenceTypeColor": {
+            "type": "string",
+            "example": "#ff0088"
+          },
+          "absenceTypeAllowed": {
+            "type": "boolean",
+            "example": true
+          },
+          "absenceTypeSystem": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeFreeday": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeFreedayIgnore": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeBusinessTrip": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeIcon": {
+            "type": "string",
+            "example": "images/abw_holiday.gif"
+          },
+          "absenceTypeHoliday": {
+            "type": "boolean",
+            "example": true
+          },
+          "absenceTypeIll": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeWorkTime": {
+            "type": "boolean",
+            "example": true
+          },
+          "absenceTypeAllowResourceCalculation": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeAllowTravelCostRecording": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeBackgroundColor": {
+            "type": "string",
+            "example": "0096ff"
+          },
+          "absenceTypeIsAnonymous": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeIsActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "absenceTypeCompanyShutdown": {
+            "type": "boolean",
+            "example": false
+          },
+          "absenceTypeCountToProjectBalance": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiAbsenceType"
+          }
+        }
+      },
+      "ApiAccountGroup": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "example": "0 - Anlage- und Kapitalkonten"
+          },
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Type": {
+            "type": "integer",
+            "example": 0
+          },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/accountGroups/1"
+          },
+          "ETag": {
+            "type": "string",
+            "example": 20190424205928
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiAccountGroup"
+          }
+        }
+      },
+      "ApiAccountingEntry": {
+        "type": "object",
+        "properties": {
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "CostCenter": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "CostCenter1": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "CostCenter2": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Amount": {
+            "type": "integer",
+            "example": 200
+          },
+          "Account": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "ContraAccount": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "AccountingEntryCollection": {
+            "type": "object",
+            "example": null
+          },
+          "DocumentDate": {
+            "type": "string",
+            "example": "2014-11-11"
+          },
+          "DocumentNumber": {
+            "type": "string",
+            "example": 1234
+          },
+          "DocumentNumber2": {
+            "type": "string",
+            "example": null
+          },
+          "DmsLink": {
+            "type": "string",
+            "example": null
+          },
+          "BesrReferenceNumber": {
+            "type": "string",
+            "example": null
+          },
+          "Description": {
+            "type": "string",
+            "example": null
+          },
+          "CalculationPosition": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "TaxRate": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Location": {
+            "type": "integer",
+            "example": 1
+          },
+          "IsNotBillable": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsBilled": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsPaid": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsKsk": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsSplitBase": {
+            "type": "boolean",
+            "example": false
+          },
+          "ParentId": {
+            "type": "integer",
+            "example": 0
+          },
+          "PaymentTerm": {
+            "$ref": "#/components/schemas/ApiPaymentTerm"
+          },
+          "ProjectNumber": {
+            "type": "string",
+            "example": "ALP_14_0002"
+          },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/accountingEntries/1"
+          },
+          "ETag": {
+            "type": "string",
+            "example": 20190315121331
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiAccountingEntry"
+          }
+        }
+      },
+      "ApiPaymentTerm": {
+        "type": "object",
+        "properties": {
+          "NetDays": {
+            "type": "string",
+            "example": 0
+          },
+          "DiscountDays1": {
+            "type": "string",
+            "example": 0
+          },
+          "DiscountRate1": {
+            "type": "string",
+            "example": 0
+          },
+          "DiscountDays2": {
+            "type": "string",
+            "example": 0
+          },
+          "DiscountRate2": {
+            "type": "string",
+            "example": 0
+          },
+          "DiscountDays3": {
+            "type": "string",
+            "example": 0
+          },
+          "DiscountRate3": {
+            "type": "string",
+            "example": 0
+          },
+          "DiscountDays4": {
+            "type": "string",
+            "example": 0
+          },
+          "DiscountRate4": {
+            "type": "string",
+            "example": 0
+          },
+          "id": {
+            "type": "integer",
+            "example": null
+          },
+          "Id": {
+            "type": "integer",
+            "example": null
+          },
+          "Path": {
+            "type": "string",
+            "example": null
+          },
+          "ETag": {
+            "type": "string",
+            "example": null
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiPaymentTerm"
+          }
+        }
+      },
+      "ApiAccountingEntryCollection": {
+        "type": "object",
+        "properties": {
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "FromDate": {
+            "type": "string",
+            "example": "0000-00-00"
+          },
+          "TillDate": {
+            "type": "string",
+            "example": "0000-00-00"
+          },
+          "IsLocked": {
+            "type": "boolean",
+            "example": false
+          },
+          "CreateEmployee": {
+            "type": "object",
+            "example": null
+          },
+          "CreateDate": {
+            "type": "string",
+            "example": "0000-00-00 00:00:00"
+          },
+          "Type": {
+            "type": "integer",
+            "example": 2
+          },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/accountingEntryCollections/1"
+          },
+          "ETag": {
+            "type": "string",
+            "example": null
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiAccountingEntryCollection"
+          }
+        }
+      },
+      "ApiAccount": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "example": "Kasse"
+          },
+          "Number": {
+            "type": "integer",
+            "example": 1000
+          },
+          "Client": {
+            "required": true,
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "DefaultContraAccount": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "SummaryAccount": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "IsActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsCashDeskAccount": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsBankAccount": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsAutomaticAccount": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsLockedForDatev": {
+            "type": "boolean",
+            "example": false
+          },
+          "TaxRate": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "AccountGroup": {
+            "required": true,
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "id": {
+            "type": "integer",
+            "example": 12
+          },
+          "Id": {
+            "type": "integer",
+            "example": 12
+          },
+          "Path": {
+            "type": "string",
+            "example": "/accounts/4"
+          },
+          "ETag": {
+            "type": "string",
+            "example": null
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiAccount"
+          }
+        }
+      },
+      "ApiHourBilling": {
+        "type": "object",
+        "properties": {
+          "Client": {
+            "allOf": [
+              {
+                "required": [
+                  "Path"
+                ]
+              },
+              {
+                "$ref": "#/components/schemas/ApiSyncItem"
+              }
+            ]
+          },
+          "CalculationPosition": {
+            "allOf": [
+              {
+                "required": [
+                  "Path"
+                ]
+              },
+              {
+                "$ref": "#/components/schemas/ApiSyncItem"
+              }
+            ]
+          },
+          "Service": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Employee": {
+            "allOf": [
+              {
+                "required": [
+                  "Path"
+                ]
+              },
+              {
+                "$ref": "#/components/schemas/ApiSyncItem"
+              }
+            ]
+          },
+          "Date": {
+            "type": "string",
+            "example": "2018-07-18"
+          },
+          "Quantity": {
+            "type": "number",
+            "example": 3.5
+          },
+          "Remark": {
+            "type": "string",
+            "example": "Example"
+          },
+          "IsBillable": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsBilled": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsInvoiced": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsApproved": {
+            "type": "boolean",
+            "example": true
+          },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/billings/hours/1"
+          },
+          "ETag": {
+            "type": "string",
+            "example": null
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiHourBilling"
+          }
+        }
+      },
+      "ApiBookingYear": {
+        "type": "object",
+        "properties": {
+          "Year": {
+            "type": "integer",
+            "example": 2019
+          },
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "IsActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsCurrent": {
+            "type": "boolean",
+            "example": true
+          },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/bookingYears/1"
+          },
+          "ETag": {
+            "type": "string",
+            "example": null
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiBookingYear"
+          }
+        }
+      },
+      "ApiService": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "example": "Cookies"
+          },
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Customer": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Project": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Description": {
+            "type": "string",
+            "example": "Brown, soft, awesome"
+          },
+          "InternalDescription": {
+            "type": "string",
+            "example": "Handmade!"
+          },
+          "RootId": {
+            "type": "integer",
+            "example": 1
+          },
+          "UnitId": {
+            "type": "integer",
+            "example": 1
+          },
+          "PurchasePrice": {
+            "type": "number",
+            "example": 8
+          },
+          "SalePrice": {
+            "type": "number",
+            "example": 10
+          },
+          "AccountId": {
+            "type": "integer",
+            "example": 1
+          },
+          "Account": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "CostCenterId": {
+            "type": "integer",
+            "example": 1
+          },
+          "ServiceFeeId": {
+            "type": "integer",
+            "example": 1
+          },
+          "ItemNumber": {
+            "type": "integer",
+            "example": 1
+          },
+          "Source": {
+            "type": "string",
+            "example": "S",
+            "description": "`S` = service source service\n`M` = service source material\n`P` = service source position\n",
+            "enum": [
+              "S",
+              "M",
+              "P"
+            ]
+          },
+          "Type": {
+            "type": "integer",
+            "example": 1
+          },
+          "IsNpo": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsOs": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsAp": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsKsk": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsDefault": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsDropdownVisible": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsClosedForTimeRecording": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "TaxRate": {
+            "type": "boolean",
+            "example": false
+          },
+          "id": {
+            "type": "string",
+            "example": "5f7bac96-3033-441a-92c2-412303a196e5"
+          },
+          "Id": {
+            "type": "string",
+            "example": "5f7bac96-3033-441a-92c2-412303a196e5"
+          },
+          "Path": {
+            "type": "string",
+            "example": "/services/5f7bac96-3033-441a-92c2-412303a196e5"
+          },
+          "ETag": {
+            "type": "string",
+            "example": "20190214150512.000000"
+          },
+          "IsActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiService"
+          }
+        }
+      },
+      "ApiCalculationPosition": {
+        "type": "object",
+        "properties": {
+          "OrderNumber": {
+            "type": "integer",
+            "example": 1
+          },
+          "Name": {
+            "type": "string",
+            "example": "Cookies"
+          },
+          "ExternalDescription": {
+            "type": "string",
+            "example": "Cookies"
+          },
+          "InternalDescription": {
+            "type": "string",
+            "example": "Cookies"
+          },
+          "Project": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Subproject": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Customer": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "IsExternalService": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsServiceNeeded": {
+            "type": "boolean",
+            "example": true
+          },
+          "DisplayPath": {
+            "type": "string",
+            "example": "Customer / TROI_19_0001 / Project 1 / Subproject 1 / Calculation Position 1"
+          },
+          "Quantity": {
+            "type": "integer",
+            "example": 1
+          },
+          "SalePrice": {
+            "type": "number",
+            "example": 10
+          },
+          "PurchasePrice": {
+            "type": "number",
+            "example": 8
+          },
+          "TotalCalculation": {
+            "type": "number",
+            "example": 10
+          },
+          "Unit": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Service": {
+            "$ref": "#/components/schemas/ApiService"
+          },
+          "IsBillable": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsOptional": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsPrintable": {
+            "type": "boolean",
+            "example": true
+          },
+          "HourClosed": {
+            "type": "boolean",
+            "example": false
+          },
+          "AccountId": {
+            "type": "integer",
+            "example": 0
+          },
+          "CostCenterId": {
+            "type": "integer",
+            "example": 0
+          },
+          "CreatedBy": {
+            "type": "integer",
+            "example": 1
+          },
+          "ModifiedBy": {
+            "type": "integer",
+            "example": 0
+          },
+          "DeletedBy": {
+            "type": "integer",
+            "example": 0
+          },
+          "CreatedAt": {
+            "type": "string",
+            "example": "2019-01-01 00:00:00"
+          },
+          "ModifiedAt": {
+            "type": "string",
+            "example": "2019-01-01 00:00:00"
+          },
+          "DeletedAt": {
+            "type": "string",
+            "example": "2019-01-01 00:00:00"
+          },
+          "PercentageMode": {
+            "type": "integer",
+            "example": 0
+          },
+          "IsPercentageGlobal": {
+            "type": "boolean",
+            "example": false
+          },
+          "ServiceSource": {
+            "type": "string",
+            "example": "S"
+          },
+          "TaxRate": {
+            "$ref": "#/components/schemas/ApiService"
+          },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/calculationPositions/1"
+          },
+          "ETag": {
+            "type": "string",
+            "example": "20190219134151"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": true
+          },
+          "TotalOffer": {
+            "type": "number",
+            "example": 10
+          },
+          "RSAs": {
+            "type": "string",
+            "example": ""
+          },
+          "lastRsaDate": {
+            "type": "string",
+            "example": ""
+          },
+          "cpIsCleared": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiCalculationPosition"
+          }
+        }
+      },
+      "ApiCalendarEventParticipant": {
+        "type": "object",
+        "properties": {
+          "CalendarEvent": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Employee": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "IsReadOnly": {
+            "type": "boolean",
+            "example": false
+          },
+          "AcceptanceState": {
+            "type": "string",
+            "description": "`A` = calendar event acceptance state accepted\n`D` = calendar event acceptance state declined\n`U` = calendar event acceptance state unknown\n",
+            "enum": [
+              "A",
+              "D",
+              "U"
+            ],
+            "example": "U"
+          },
+          "Id": {
+            "type": "string",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "description": "/calendarEventParticipants/1"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiCalendarEventParticipant"
+          }
+        }
+      },
+      "ApiCalendarEvent": {
+        "type": "object",
+        "properties": {
+          "Start": {
+            "type": "string",
+            "description": "yyyy-mm-dd hh:mm:ss",
+            "example": "2020-01-01 00:00:00"
+          },
+          "End": {
+            "type": "string",
+            "description": "yyyy-mm-dd hh:mm:ss",
+            "example": "2020-12-31 23:59:59"
+          },
+          "Subject": {
+            "type": "string",
+            "example": "Meeting"
+          },
+          "Description": {
+            "type": "string",
+            "example": "Meeting about new Troi version"
+          },
+          "Location": {
+            "type": "string",
+            "example": "Meeting Room 01"
+          },
+          "Owner": {
+            "$ref": "#/components/schemas/ApiSyncItem",
+            "description": "link to ApiSyncItem object, readonly"
+          },
+          "Type": {
+            "type": "string",
+            "description": "`R`=regular, `H`=holiday, `G`=general, `P`=private, `T`=assigment\n",
+            "example": "R",
+            "enum": [
+              "R",
+              "H",
+              "G",
+              "P",
+              "T"
+            ]
+          },
+          "IsPublic": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsImportant": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsExternal": {
+            "type": "boolean",
+            "example": false
+          },
+          "Participants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiSyncItem"
+            }
+          },
+          "SyncParticipants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiSyncItem"
+            }
+          },
+          "GroupId": {
+            "type": "integer",
+            "example": 0
+          },
+          "ReminderMinutesBeforeStart": {
+            "type": "integer",
+            "example": 0
+          },
+          "ExternalId": {
+            "type": "string"
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/api/v2/rest/calendarEvents/1"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiCalendarEvent"
+          }
+        }
+      },
+      "ApiClient": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "example": "Troi"
+          },
+          "Number": {
+            "type": "string",
+            "example": 1
+          },
+          "IsActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "Contact": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "DatevAccountNumberLength": {
+            "type": "integer",
+            "example": 0
+          },
+          "DatevConsultantNumber": {
+            "type": "integer",
+            "example": 1
+          },
+          "DatevClientNumber": {
+            "type": "integer",
+            "example": 1
+          },
+          "Id": {
+            "type": "string",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "description": "/clients/1"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiClient"
+          }
+        }
+      },
+      "ApiCurrency": {
+        "type": "object",
+        "properties": {
+          "Root": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Customer": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Project": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "DecimalMark": {
+            "type": "string",
+            "example": ","
+          },
+          "ThousandsMark": {
+            "type": "string",
+            "example": "."
+          },
+          "LongName": {
+            "type": "string",
+            "example": "Euro"
+          },
+          "Symbol": {
+            "type": "string",
+            "example": "EUR"
+          },
+          "Position": {
+            "type": "string",
+            "example": "1",
+            "enum": [
+              0,
+              1
+            ]
+          },
+          "Precision": {
+            "type": "string",
+            "example": "1.00"
+          },
+          "ExchangeRate": {
+            "type": "string",
+            "example": "1.00000"
+          },
+          "IsSystem": {
+            "type": "string",
+            "example": "0"
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/misc/currencies/1"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiCurrency"
+          }
+        }
+      },
+      "ApiProjectStatus": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "example": "abgeschlossen"
+          },
+          "IsDefault": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsBlockedForTimeRecording": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsBlockedForBookkeeping": {
+            "type": "boolean",
+            "example": false
+          },
+          "IsVisibleInDropdown": {
+            "type": "boolean",
+            "example": true
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiProjectStatus"
+          }
+        }
+      },
+      "ApiProjectType": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "example": "In Arbeit"
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiProjectType"
+          }
+        }
+      },
+      "ApiProject": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "example": "Website"
+          },
+          "Number": {
+            "type": "string",
+            "example": "TROI-2020-001"
+          },
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Customer": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "ExternalDescription": {
+            "type": "string",
+            "example": "Expedita quia nobis dolorem voluptatibus est. Voluptatibus dolor ut aperiam iste et aut consectetur.\nVoluptas quia qui doloremque dolore non sed. Aperiam distinctio omnis iure et qui nesciunt.\n"
+          },
+          "InternalDescription": {
+            "type": "string",
+            "example": "Expedita quia nobis dolorem voluptatibus est. Voluptatibus dolor ut aperiam iste et aut consectetur.\nVoluptas quia qui doloremque dolore non sed. Aperiam distinctio omnis iure et qui nesciunt.\n"
+          },
+          "Status": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ApiSyncItem"
+              },
+              {
+                "$ref": "#/components/schemas/ApiProjectStatus"
+              }
+            ]
+          },
+          "Currency": {
+            "$ref": "#/components/schemas/ApiCurrency"
+          },
+          "IsApproved": {
+            "type": "boolean",
+            "example": true
+          },
+          "IsBlocked": {
+            "type": "boolean",
+            "example": false
+          },
+          "BlockedBy": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Leader": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Team": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "TypeId": {
+            "type": "integer",
+            "example": 0
+          },
+          "TaxRateId": {
+            "type": "integer",
+            "example": 0
+          },
+          "ProjectFolderId": {
+            "type": "integer",
+            "example": 0
+          },
+          "ForeignServicesCpIp": {
+            "type": "integer",
+            "example": 0
+          },
+          "ProjectTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiProjectType"
+            }
+          },
+          "Contact": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "InvoiceRecipientId": {
+            "type": "integer",
+            "example": 0
+          },
+          "InvoiceRecipientPersonId": {
+            "type": "integer",
+            "example": 0
+          },
+          "ReportingDate": {
+            "type": "string",
+            "example": "31.12.2020"
+          },
+          "ApprovedDate": {
+            "type": "string",
+            "example": "31.12.2020"
+          },
+          "CreatedBy": {
+            "type": "string",
+            "example": 56
+          },
+          "ModifiedBy": {
+            "type": "string",
+            "example": 56
+          },
+          "DeletedBy": {
+            "type": "string",
+            "example": 56
+          },
+          "CreatedAt": {
+            "type": "string",
+            "example": "2020-12-31 00:00:00"
+          },
+          "ModifiedAt": {
+            "type": "string",
+            "example": "2020-12-31 00:00:00"
+          },
+          "DeletedAt": {
+            "type": "string",
+            "example": "0000-00-00 00:00:00"
+          },
+          "projectIssueTrackerProjectKey": {
+            "type": "string"
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/projects/1"
+          },
+          "ETag": {
+            "type": "string",
+            "example": 20190313153646
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiProject"
+          }
+        }
+      },
+      "ApiContact": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "type": "string",
+            "example": "ApiContact:Person",
+            "enum": [
+              "ApiContact:Person",
+              "ApiContact:Department",
+              "ApiContact:Company"
+            ]
+          },
+          "Name": {
+            "type": "string",
+            "example": "Example"
+          },
+          "Salutation": {
+            "type": "string"
+          },
+          "Name1": {
+            "type": "string"
+          },
+          "Name2": {
+            "type": "string"
+          },
+          "Name3": {
+            "type": "string"
+          },
+          "Categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiSyncItem"
+            }
+          },
+          "Title": {
+            "type": "string"
+          },
+          "PrivateFax": {
+            "type": "string"
+          },
+          "PrivateMail": {
+            "type": "string"
+          },
+          "PrivateMobile": {
+            "type": "string"
+          },
+          "PrivatePhone": {
+            "type": "string"
+          },
+          "PrivateWeb": {
+            "type": "string"
+          },
+          "PrivateAddressCity": {
+            "type": "string"
+          },
+          "PrivateAddressCountry": {
+            "type": "string"
+          },
+          "PrivateAddressCountryIso": {
+            "type": "string"
+          },
+          "PrivateAddressState": {
+            "type": "string"
+          },
+          "PrivateAddressStreet": {
+            "type": "string"
+          },
+          "PrivateAddressZipCode": {
+            "type": "string"
+          },
+          "Birthday": {
+            "type": "string"
+          },
+          "Position": {
+            "type": "string"
+          },
+          "OfficePhone": {
+            "type": "string"
+          },
+          "OfficeMobile": {
+            "type": "string"
+          },
+          "OfficeFax": {
+            "type": "string"
+          },
+          "OfficeMail": {
+            "type": "string"
+          },
+          "CompanyPhone": {
+            "type": "string"
+          },
+          "CompanyFax": {
+            "type": "string"
+          },
+          "CompanyWeb": {
+            "type": "string"
+          },
+          "CompanyMail": {
+            "type": "string"
+          },
+          "CompanyAddressCity": {
+            "type": "string"
+          },
+          "CompanyAddressCountry": {
+            "type": "string"
+          },
+          "CompanyAddressCountryIso": {
+            "type": "string"
+          },
+          "CompanyAddressState": {
+            "type": "string"
+          },
+          "CompanyAddressStreet": {
+            "type": "string"
+          },
+          "CompanyAddressZipCode": {
+            "type": "string"
+          },
+          "Remark": {
+            "type": "string"
+          },
+          "Parent": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Employee": {
+            "$ref": "#/components/schemas/ApiEmployee"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "IsFavorite": {
+            "type": "boolean"
+          },
+          "IsInactive": {
+            "type": "boolean"
+          },
+          "ExternalId": {
+            "type": "string"
+          },
+          "AccessGroup": {
+            "type": "integer"
+          },
+          "CreatedBy": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Id": {
+            "type": "integer"
+          },
+          "Path": {
+            "type": "string",
+            "example": "/contacts/53"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean"
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiContact"
+          }
+        }
+      },
+      "ApiEmployee": {
+        "type": "object",
+        "properties": {
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "LoginName": {
+            "type": "string"
+          },
+          "FirstName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "SmtpAddress": {
+            "type": "string"
+          },
+          "FullName": {
+            "type": "string"
+          },
+          "Contact": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "IsFreelancer": {
+            "type": "boolean"
+          },
+          "IsLocked": {
+            "type": "boolean"
+          },
+          "Brand": {
+            "type": "string"
+          },
+          "workingHours": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "TimeZone": {
+            "type": "string",
+            "example": "Europe/Berlin"
+          },
+          "Id": {
+            "type": "integer"
+          },
+          "Path": {
+            "type": "string",
+            "example": "/employees/59"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean"
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiEmployee"
+          }
+        }
+      },
+      "ApiContactCategory": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "example": "Test"
+          },
+          "Category": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiSyncItem"
+            }
+          },
+          "Contact": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiSyncItem"
+            }
+          },
+          "Id": {
+            "type": "integer",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "example": "/contactCategories/1"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean"
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiContactCategory"
+          }
+        }
+      },
+      "ApiCustomer": {
+        "type": "object",
+        "properties": {
+          "Client": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Debitor": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "TaxRate": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "TaxRateDisplayMode": {
+            "type": "integer",
+            "example": 1
+          },
+          "PaymentTerm": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "IsActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "Contact": {
+            "$ref": "#/components/schemas/ApiSyncItem"
+          },
+          "Shortcut": {
+            "type": "string"
+          },
+          "Number": {
+            "type": "string",
+            "example": 1
+          },
+          "VatNumber": {
+            "type": "string",
+            "example": 1
+          },
+          "TaxNumber": {
+            "type": "string",
+            "example": 1
+          },
+          "Name": {
+            "type": "string",
+            "example": "Troi GmbH"
+          },
+          "customerDefaultEmail": {
+            "type": "string"
+          },
+          "FileShareName": {
+            "type": "string",
+            "example": "Troi_GmbH"
+          },
+          "Id": {
+            "type": "string",
+            "example": 1
+          },
+          "Path": {
+            "type": "string",
+            "description": "/customers/1"
+          },
+          "ETag": {
+            "type": "string"
+          },
+          "IsDeleted": {
+            "type": "boolean",
+            "example": false
+          },
+          "ClassName": {
+            "type": "string",
+            "example": "ApiCustomer"
+          }
+        }
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Authentication information is missing or invalid",
+        "headers": {
+          "WWW_Authenticate": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Bitte übergeben Sie die Anmeldedaten über \"HTTP Basic\""
+                },
+                "messageCode": {
+                  "type": "string",
+                  "example": "api_sync_provide_http_user_credentials"
+                },
+                "ClassName": {
+                  "type": "string",
+                  "example": "ApiErrorData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Bad request. Parameter missing",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Fehlender Parameter \"example\" in URL-Variablen"
+                },
+                "messageCode": {
+                  "type": "string",
+                  "example": "api_general_missing_single_param"
+                },
+                "ClassName": {
+                  "type": "string",
+                  "example": "ApiErrorData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Der Pfad kann nicht verarbeitet werden: \"example\""
+                },
+                "messageCode": {
+                  "type": "string",
+                  "example": "api_sync_path_can_not_be_processed"
+                },
+                "ClassName": {
+                  "type": "string",
+                  "example": "ApiErrorData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "description": "The login via Basic Auth is done with the Troi user name and the API token, which can be generated in the Security Centre module.\n\nSee also:https://troi-software.atlassian.net/wiki/spaces/TG/pages/821918/Sicherheitscenter\n",
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

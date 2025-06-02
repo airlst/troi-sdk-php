@@ -1,0 +1,32 @@
+<?php
+
+namespace Troi\V2\Requests\Contacts;
+
+use DateTime;
+use Saloon\Enums\Method;
+use Saloon\Http\Request;
+
+/**
+ * Update contact
+ *
+ * Update contact
+ */
+class UpdateContact extends Request
+{
+	protected Method $method = Method::PUT;
+
+
+	public function resolveEndpoint(): string
+	{
+		return "/contacts/{$this->id}";
+	}
+
+
+	/**
+	 * @param int $id Contact ID
+	 */
+	public function __construct(
+		protected int $id,
+	) {
+	}
+}

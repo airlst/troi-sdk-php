@@ -1,5 +1,7 @@
 <?php
 
+use NunoMaduro\LaravelConsoleSummary\SummaryCommand;
+
 return [
 
     /*
@@ -13,7 +15,7 @@ return [
     |
     */
 
-    'default' => NunoMaduro\LaravelConsoleSummary\SummaryCommand::class,
+    'default' => SummaryCommand::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +28,9 @@ return [
     |
     */
 
-    'paths' => [app_path('Commands')],
+    'paths' => [
+        app_path('Commands')
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -39,9 +43,7 @@ return [
     |
     */
 
-    'add' => [
-        //
-    ],
+    'add' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -76,8 +78,5 @@ return [
     |
     */
 
-    'remove' => [
-        //
-    ],
-
+    'remove' => [],
 ];
