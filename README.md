@@ -8,7 +8,7 @@ with the help of [crescat-io/saloon-sdk-generator](https://github.com/crescat-io
 ## Installation
 
 ```bash
-composer require mkaverin/troi-sdk-php
+composer require airlst/troi-sdk-php
 ```
 
 ## Usage
