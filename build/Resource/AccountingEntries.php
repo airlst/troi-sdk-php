@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Troi\V2\Resource;
 
 use Saloon\Http\Response;
@@ -12,52 +14,47 @@ use Troi\V2\Resource;
 
 class AccountingEntries extends Resource
 {
-	/**
-	 * @param int $clientId Client id
-	 * @param int $cpId Fetch all Accounting Entries for the given CalculationPosition ID
-	 * @param int $projectId Fetch all Accounting Entries for the given Project ID
-	 * @param int $accountingEntryCollectionId Fetch all Accounting Entries for the given AccountingEntryCollection ID
-	 */
-	public function fetchAllAccountingEntriesForTheGivenClientId(
-		int $clientId,
-		?int $cpId = null,
-		?int $projectId = null,
-		?int $accountingEntryCollectionId = null,
-	): Response
-	{
-		return $this->connector->send(new FetchAllAccountingEntriesForTheGivenClientId($clientId, $cpId, $projectId, $accountingEntryCollectionId));
-	}
+    /**
+     * @param int $clientId                    Client id
+     * @param int $cpId                        Fetch all Accounting Entries for the given CalculationPosition ID
+     * @param int $projectId                   Fetch all Accounting Entries for the given Project ID
+     * @param int $accountingEntryCollectionId Fetch all Accounting Entries for the given AccountingEntryCollection ID
+     */
+    public function fetchAllAccountingEntriesForTheGivenClientId(
+        int $clientId,
+        ?int $cpId = null,
+        ?int $projectId = null,
+        ?int $accountingEntryCollectionId = null,
+    ): Response {
+        return $this->connector->send(new FetchAllAccountingEntriesForTheGivenClientId($clientId, $cpId, $projectId, $accountingEntryCollectionId));
+    }
 
+    public function saveAccountingEntryObject(): Response
+    {
+        return $this->connector->send(new SaveAccountingEntryObject());
+    }
 
-	public function saveAccountingEntryObject(): Response
-	{
-		return $this->connector->send(new SaveAccountingEntryObject());
-	}
+    /**
+     * @param int $id Accounting entry id
+     */
+    public function fetchAccountingEntryForTheGivenAccountingEntryId(int $id): Response
+    {
+        return $this->connector->send(new FetchAccountingEntryForTheGivenAccountingEntryId($id));
+    }
 
+    /**
+     * @param int $id Accounting entry id
+     */
+    public function updateAccountingEntryObject(int $id): Response
+    {
+        return $this->connector->send(new UpdateAccountingEntryObject($id));
+    }
 
-	/**
-	 * @param int $id Accounting entry id
-	 */
-	public function fetchAccountingEntryForTheGivenAccountingEntryId(int $id): Response
-	{
-		return $this->connector->send(new FetchAccountingEntryForTheGivenAccountingEntryId($id));
-	}
-
-
-	/**
-	 * @param int $id Accounting entry id
-	 */
-	public function updateAccountingEntryObject(int $id): Response
-	{
-		return $this->connector->send(new UpdateAccountingEntryObject($id));
-	}
-
-
-	/**
-	 * @param int $id Accounting entry id
-	 */
-	public function deleteAccountingEntry(int $id): Response
-	{
-		return $this->connector->send(new DeleteAccountingEntry($id));
-	}
+    /**
+     * @param int $id Accounting entry id
+     */
+    public function deleteAccountingEntry(int $id): Response
+    {
+        return $this->connector->send(new DeleteAccountingEntry($id));
+    }
 }

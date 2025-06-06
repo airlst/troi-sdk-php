@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use NunoMaduro\LaravelConsoleSummary\SummaryCommand;
 
 return [
@@ -29,7 +31,7 @@ return [
     */
 
     'paths' => [
-        app_path('Commands')
+        app_path('Commands'),
     ],
 
     /*
@@ -57,7 +59,7 @@ return [
     */
 
     'hidden' => [
-        NunoMaduro\LaravelConsoleSummary\SummaryCommand::class,
+        SummaryCommand::class,
         Symfony\Component\Console\Command\DumpCompletionCommand::class,
         Symfony\Component\Console\Command\HelpCommand::class,
         Illuminate\Console\Scheduling\ScheduleRunCommand::class,

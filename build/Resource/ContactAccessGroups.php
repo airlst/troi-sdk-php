@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Troi\V2\Resource;
 
 use Saloon\Http\Response;
@@ -8,8 +10,8 @@ use Troi\V2\Resource;
 
 class ContactAccessGroups extends Resource
 {
-	public function fetchAllAccessGroupsForContacts(): Response
-	{
-		return $this->connector->send(new FetchAllAccessGroupsForContacts());
-	}
+    public function fetchAllAccessGroupsForContacts(): Response
+    {
+        return $this->connector->send(new FetchAllAccessGroupsForContacts());
+    }
 }

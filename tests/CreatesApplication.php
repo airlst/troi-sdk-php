@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Troi\V2\SDKBuilder\Tests;
 
 use Illuminate\Contracts\Console\Kernel;
@@ -10,11 +12,11 @@ trait CreatesApplication
     /**
      * Creates the application.
      */
-    public function createApplication(): Application
+    public function createApplication(): Application // @phpstan-ignore-line
     {
-        $app = require __DIR__.'/../bootstrap/app.php';
+        $app = require __DIR__ . '/../bootstrap/app.php';
 
-        $app->make(Kernel::class)->bootstrap();
+        $app->make(Kernel::class)->bootstrap(); // @phpstan-ignore-line
 
         return $app;
     }

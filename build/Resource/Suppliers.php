@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Troi\V2\Resource;
 
 use Saloon\Http\Response;
@@ -11,45 +13,41 @@ use Troi\V2\Resource;
 
 class Suppliers extends Resource
 {
-	/**
-	 * @param int $clientId Client ID
-	 * @param bool $returnApiSyncItems Fetch all suppliers for the given client ID and return them as syncItems
-	 * @param string $search Fetch all suppliers for the given search term
-	 * @param bool $isActive Fetch all active suppliers
-	 * @param bool $showReferenceDetails Fetch all suppliers and return extended payment term array
-	 */
-	public function fetchAllSuppliersFromGivenClient(
-		int $clientId,
-		?bool $returnApiSyncItems = null,
-		?string $search = null,
-		?bool $isActive = null,
-		?bool $showReferenceDetails = null,
-	): Response
-	{
-		return $this->connector->send(new FetchAllSuppliersFromGivenClient($clientId, $returnApiSyncItems, $search, $isActive, $showReferenceDetails));
-	}
+    /**
+     * @param int    $clientId             Client ID
+     * @param bool   $returnApiSyncItems   Fetch all suppliers for the given client ID and return them as syncItems
+     * @param string $search               Fetch all suppliers for the given search term
+     * @param bool   $isActive             Fetch all active suppliers
+     * @param bool   $showReferenceDetails Fetch all suppliers and return extended payment term array
+     */
+    public function fetchAllSuppliersFromGivenClient(
+        int $clientId,
+        ?bool $returnApiSyncItems = null,
+        ?string $search = null,
+        ?bool $isActive = null,
+        ?bool $showReferenceDetails = null,
+    ): Response {
+        return $this->connector->send(new FetchAllSuppliersFromGivenClient($clientId, $returnApiSyncItems, $search, $isActive, $showReferenceDetails));
+    }
 
+    public function saveSupplier(): Response
+    {
+        return $this->connector->send(new SaveSupplier());
+    }
 
-	public function saveSupplier(): Response
-	{
-		return $this->connector->send(new SaveSupplier());
-	}
+    /**
+     * @param int $id Fetch supplier for the given supplier ID
+     */
+    public function fetchSupplierForTheGivenSupplierId(int $id): Response
+    {
+        return $this->connector->send(new FetchSupplierForTheGivenSupplierId($id));
+    }
 
-
-	/**
-	 * @param int $id Fetch supplier for the given supplier ID
-	 */
-	public function fetchSupplierForTheGivenSupplierId(int $id): Response
-	{
-		return $this->connector->send(new FetchSupplierForTheGivenSupplierId($id));
-	}
-
-
-	/**
-	 * @param int $id Supplier ID
-	 */
-	public function updateSupplier(int $id): Response
-	{
-		return $this->connector->send(new UpdateSupplier($id));
-	}
+    /**
+     * @param int $id Supplier ID
+     */
+    public function updateSupplier(int $id): Response
+    {
+        return $this->connector->send(new UpdateSupplier($id));
+    }
 }

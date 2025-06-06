@@ -1,23 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Troi\V2\SDKBuilder\Generators;
 
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
 use Crescat\SaloonSdkGenerator\Data\Generator\Endpoint;
 use Crescat\SaloonSdkGenerator\Generator;
 use Crescat\SaloonSdkGenerator\Helpers\NameHelper;
+use Exception;
 use Illuminate\Support\Str;
 use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Auth\BasicAuthenticator;
 use Saloon\Http\Connector;
+
+use function is_null;
+use function sprintf;
 
 class ConnectorGenerator extends Generator
 {
     public function generate(ApiSpecification $specification): PhpFile|array
     {
-        return $this->generateConnectorClass($specification);
+        return $this->generateConnectorClass($specification) ?? [];
     }
 
     protected function generateConnectorClass(ApiSpecification $specification): ?PhpFile
@@ -25,12 +30,12 @@ class ConnectorGenerator extends Generator
         $classType = new ClassType($this->config->connectorName);
         $classType->setExtends(Connector::class);
 
-        if ($specification->name) {
+        if ($specification->name !== null && $specification->name !== '' && $specification->name !== '0') {
             $classType->addComment($specification->name);
         }
 
-        if ($specification->description) {
-            $classType->addComment($specification->name ? "\n{$specification->description}" : $specification->description);
+        if ($specification->description !== null && $specification->description !== '' && $specification->description !== '0') {
+            $classType->addComment($specification->name !== null && $specification->name !== '' && $specification->name !== '0' ? "\n{$specification->description}" : $specification->description);
         }
 
         $classFile = new PhpFile();
@@ -49,18 +54,18 @@ class ConnectorGenerator extends Generator
             ->setProtected()
             ->setReadOnly();
 
+        if (is_null($specification->baseUrl)) {
+            throw new Exception('Base URL is required in the API specification.');
+        }
+
         $classType->addMethod('resolveBaseUrl')
             ->setReturnType('string')
-            ->setBody(
-                new Literal(sprintf('return "%s";', Str::replaceFirst('{customer}', '{$this->customer}', $specification->baseUrl)))
-            );
+            ->setBody(sprintf('return "%s";', Str::replaceFirst('{customer}', '{$this->customer}', $specification->baseUrl)));
 
         $classType->addMethod('defaultAuth')
             ->setReturnType(BasicAuthenticator::class)
             ->setProtected()
-            ->setBody(
-                new Literal('return new BasicAuthenticator($this->username, $this->password);')
-            );
+            ->setBody('return new BasicAuthenticator($this->username, $this->password);');
 
         $namespace = $classFile
             ->addNamespace("{$this->config->namespace}")
@@ -68,9 +73,7 @@ class ConnectorGenerator extends Generator
             ->addUse(BasicAuthenticator::class);
 
         $collections = collect($specification->endpoints)
-            ->map(function (Endpoint $endpoint) {
-                return NameHelper::connectorClassName($endpoint->collection ?: $this->config->fallbackResourceName);
-            })
+            ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName)) // @phpstan-ignore-line
             ->unique()
             ->sort()
             ->all();
@@ -87,10 +90,7 @@ class ConnectorGenerator extends Generator
             $classType
                 ->addMethod(NameHelper::safeVariableName($collection))
                 ->setReturnType($resourceFQN)
-                ->setBody(
-                    new Literal(sprintf('return new %s($this);', $resourceClassName))
-                );
-
+                ->setBody(sprintf('return new %s($this);', $resourceClassName));
         }
 
         $namespace->add($classType);

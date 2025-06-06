@@ -1,24 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
+use Saloon\Http\Auth\BasicAuthenticator;
+use Troi\V2\Requests\Clients\FetchAllTenantsFormerlyClients;
+use Troi\V2\Resource\Clients;
 use Troi\V2\TroiSDK;
 
-it('sets correct base URL', function () {
-    $connector = new TroiSDK('some-customer');
-
-    expect($connector)->toBeInstanceOf(TroiSDK::class);
-    expect($connector->resolveBaseUrl())->toBe('https://some-customer.troi.software/api/v2/rest');
+/** @var Troi\V2\SDKBuilder\Tests\TestCase $this */
+it('sets correct base URL', function (): void {
+    expect($this->connector)->toBeInstanceOf(TroiSDK::class);
+    expect($this->connector->resolveBaseUrl())->toBe('https://test-customer.troi.software/api/v2/rest');
 });
 
-it('handles auth', function () {
-    $connector = new TroiSDK(
-        config('services.troi.customer'),
-        config('services.troi.username'),
-        config('services.troi.password'),
-    );
+it('handles auth', function (): void {
+    $this->connector->withMockClient($this->getMockClient(FetchAllTenantsFormerlyClients::class));
 
-    $response = $connector->clients()->fetchAllTenantsFormerlyClients();
+    $resource = new Clients($this->connector);
+    $resource->fetchAllTenantsFormerlyClients();
 
-    expect($response->status())->toBe(200);
-    expect($response->body())->toBeJson();
-    expect($response->json())->toBeArray();
+    $authenticator = $this->connector->getMockClient()->getLastPendingRequest()->getAuthenticator();
+
+    expect($authenticator)->toBeInstanceOf(BasicAuthenticator::class);
+    expect($authenticator->username)->toBe('test-username');
+    expect($authenticator->password)->toBe('test-password');
 });

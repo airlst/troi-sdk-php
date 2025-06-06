@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Troi\V2\SDKBuilder\Generators;
 
 use Crescat\SaloonSdkGenerator\Data\Generator\ApiSpecification;
@@ -14,6 +16,9 @@ use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Response;
 
+use function in_array;
+use function sprintf;
+
 class ResourceGenerator extends Generator
 {
     public function generate(ApiSpecification $specification): PhpFile|array
@@ -22,35 +27,15 @@ class ResourceGenerator extends Generator
     }
 
     /**
-     * @return array|PhpFile[]
+     * @param array|Endpoint[] $endpoints
      */
-    protected function generateResourceClasses(ApiSpecification $specification): array
-    {
-        $classes = [];
-
-        $groupedByCollection = collect($specification->endpoints)->groupBy(function (Endpoint $endpoint) {
-            return NameHelper::resourceClassName(
-                $endpoint->collection ?: $this->config->fallbackResourceName
-            );
-        });
-
-        foreach ($groupedByCollection as $collection => $items) {
-            $classes[] = $this->generateResourceClass($collection, $items->toArray());
-        }
-
-        return $classes;
-    }
-
-    /**
-     * @param  array|Endpoint[]  $endpoints
-     */
-    public function generateResourceClass(string $resourceName, array $endpoints): ?PhpFile
+    public function generateResourceClass(string $resourceName, array $endpoints): PhpFile
     {
         $classType = new ClassType($resourceName);
 
         $classType->setExtends("{$this->config->namespace}\\Resource");
 
-        $classFile = new PhpFile;
+        $classFile = new PhpFile();
         $namespace = $classFile
             ->addNamespace("{$this->config->namespace}\\{$this->config->resourceNamespaceSuffix}")
             ->addUse("{$this->config->namespace}\\Resource");
@@ -60,7 +45,7 @@ class ResourceGenerator extends Generator
         foreach ($endpoints as $endpoint) {
             $requestClassName = NameHelper::resourceClassName($endpoint->name);
             $methodName = NameHelper::safeVariableName($requestClassName);
-            $requestClassNameAlias = $requestClassName == $resourceName ? "{$requestClassName}Request" : null;
+            $requestClassNameAlias = $requestClassName === $resourceName ? "{$requestClassName}Request" : null;
             $requestClassFQN = "{$this->config->namespace}\\{$this->config->requestNamespaceSuffix}\\{$resourceName}\\{$requestClassName}";
 
             $namespace
@@ -72,10 +57,10 @@ class ResourceGenerator extends Generator
 
             try {
                 $method = $classType->addMethod($methodName);
-            } catch (InvalidStateException $exception) {
+            } catch (InvalidStateException) {
                 // TODO: handle more gracefully in the future
                 $deduplicatedMethodName = NameHelper::safeVariableName(
-                    sprintf('%s%s', $methodName, 'Duplicate'.$duplicateCounter)
+                    sprintf('%s%s', $methodName, 'Duplicate' . $duplicateCounter)
                 );
                 $duplicateCounter++;
                 dump("DUPLICATE: {$requestClassName} -> {$deduplicatedMethodName}");
@@ -95,7 +80,7 @@ class ResourceGenerator extends Generator
             }
 
             foreach ($endpoint->bodyParameters as $parameter) {
-                if (in_array($parameter->name, $this->config->ignoredBodyParams)) {
+                if (in_array($parameter->name, $this->config->ignoredBodyParams, true)) {
                     continue;
                 }
 
@@ -104,17 +89,14 @@ class ResourceGenerator extends Generator
             }
 
             foreach ($endpoint->queryParameters as $parameter) {
-                if (in_array($parameter->name, $this->config->ignoredQueryParams)) {
+                if (in_array($parameter->name, $this->config->ignoredQueryParams, true)) {
                     continue;
                 }
                 $this->addPropertyToMethod($method, $parameter);
                 $args[] = new Literal(sprintf('$%s', NameHelper::safeVariableName($parameter->name)));
             }
 
-            $method->setBody(
-                new Literal(sprintf('return $this->connector->send(new %s(%s));', $requestClassNameAlias ?? $requestClassName, implode(', ', $args)))
-            );
-
+            $method->setBody(sprintf('return $this->connector->send(new %s(%s));', $requestClassNameAlias ?? $requestClassName, implode(', ', $args)));
         }
 
         $namespace->add($classType);
@@ -122,12 +104,30 @@ class ResourceGenerator extends Generator
         return $classFile;
     }
 
+    /**
+     * @return array|PhpFile[]
+     */
+    protected function generateResourceClasses(ApiSpecification $specification): array
+    {
+        $classes = [];
+
+        $groupedByCollection = collect($specification->endpoints)->groupBy(fn (Endpoint $endpoint): string => NameHelper::resourceClassName(
+            $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName // @phpstan-ignore-line
+        ));
+
+        foreach ($groupedByCollection as $collection => $items) {
+            $classes[] = $this->generateResourceClass($collection, $items->toArray());
+        }
+
+        return $classes;
+    }
+
     protected function addPropertyToMethod(Method $method, Parameter $parameter): Method
     {
         $name = NameHelper::safeVariableName($parameter->name);
 
-        $property =
-            $method
+        $property
+            = $method
                 ->addComment(
                     trim(sprintf('@param %s $%s %s', $parameter->type, $name, $parameter->description))
                 )
