@@ -11,6 +11,6 @@
 /.php-cs-fixer.php export-ignore
 /application export-ignore
 /composer.lock export-ignore
-/pphpstan.php export-ignore
+/phpstan.php export-ignore
 /phpunit.xml.dist export-ignore
 /rector.php export-ignore
