@@ -42,9 +42,6 @@
             "Troi\\V2\\SDKBuilder\\Tests\\": "tests/"
         }
     },
-    "bin": [
-        "application"
-    ],
     "config": {
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
