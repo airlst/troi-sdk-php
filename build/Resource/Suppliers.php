@@ -30,9 +30,23 @@ class Suppliers extends Resource
         return $this->connector->send(new FetchAllSuppliersFromGivenClient($clientId, $returnApiSyncItems, $search, $isActive, $showReferenceDetails));
     }
 
-    public function saveSupplier(): Response
-    {
-        return $this->connector->send(new SaveSupplier());
+    public function saveSupplier(
+        ?array $client = null,
+        ?array $creditor = null,
+        ?array $paymentTerm = null,
+        ?bool $isActive = null,
+        ?array $contact = null,
+        ?string $number = null,
+        ?string $vatNumber = null,
+        ?string $taxNumber = null,
+        ?string $name = null,
+        ?string $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveSupplier($client, $creditor, $paymentTerm, $isActive, $contact, $number, $vatNumber, $taxNumber, $name, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -46,8 +60,22 @@ class Suppliers extends Resource
     /**
      * @param int $id Supplier ID
      */
-    public function updateSupplier(int $id): Response
-    {
-        return $this->connector->send(new UpdateSupplier($id));
+    public function updateSupplier(
+        int $id,
+        ?array $client = null,
+        ?array $creditor = null,
+        ?array $paymentTerm = null,
+        ?bool $isActive = null,
+        ?array $contact = null,
+        ?string $number = null,
+        ?string $vatNumber = null,
+        ?string $taxNumber = null,
+        ?string $name = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateSupplier($id, $client, $creditor, $paymentTerm, $isActive, $contact, $number, $vatNumber, $taxNumber, $name, $path, $etag, $isDeleted, $className));
     }
 }

@@ -29,9 +29,17 @@ class Categories extends Resource
         return $this->connector->send(new FetchAllContactCategories($contactId, $categoryId, $size, $from));
     }
 
-    public function saveContactCategory(): Response
-    {
-        return $this->connector->send(new SaveContactCategory());
+    public function saveContactCategory(
+        ?string $name = null,
+        ?array $category = null,
+        ?array $contact = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveContactCategory($name, $category, $contact, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -45,9 +53,17 @@ class Categories extends Resource
     /**
      * @param int $id Contact categorie ID
      */
-    public function updateContactCategorie(int $id): Response
-    {
-        return $this->connector->send(new UpdateContactCategorie($id));
+    public function updateContactCategorie(
+        int $id,
+        ?string $name = null,
+        ?array $category = null,
+        ?array $contact = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateContactCategorie($id, $name, $category, $contact, $path, $etag, $isDeleted, $className));
     }
 
     /**

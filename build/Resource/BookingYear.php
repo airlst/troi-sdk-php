@@ -22,9 +22,18 @@ class BookingYear extends Resource
         return $this->connector->send(new FetchAllBookingYearsForTheGivenClientId($clientId));
     }
 
-    public function saveBookingYear(): Response
-    {
-        return $this->connector->send(new SaveBookingYear());
+    public function saveBookingYear(
+        ?int $year = null,
+        ?array $client = null,
+        ?bool $isActive = null,
+        ?bool $isCurrent = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveBookingYear($year, $client, $isActive, $isCurrent, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -38,9 +47,18 @@ class BookingYear extends Resource
     /**
      * @param int $id Booking Year id
      */
-    public function updateBookingYear(int $id): Response
-    {
-        return $this->connector->send(new UpdateBookingYear($id));
+    public function updateBookingYear(
+        int $id,
+        ?int $year = null,
+        ?array $client = null,
+        ?bool $isActive = null,
+        ?bool $isCurrent = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateBookingYear($id, $year, $client, $isActive, $isCurrent, $path, $etag, $isDeleted, $className));
     }
 
     /**

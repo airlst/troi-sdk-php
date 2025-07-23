@@ -47,9 +47,56 @@ class CalculationPositions extends Resource
         return $this->connector->send(new FetchAllCalculationPositionsForTheGivenClientId($clientId, $projectId, $subprojectId, $search, $timeRecording, $favoritesOnly, $withoutHourClosed, $reeDate, $projectStatusId, $bookKeeping, $projectIds, $issueTrackerProjectKey));
     }
 
-    public function saveCalculationPosition(): Response
-    {
-        return $this->connector->send(new SaveCalculationPosition());
+    /**
+     * @param float|int $salePrice
+     * @param float|int $purchasePrice
+     * @param float|int $totalCalculation
+     * @param float|int $totalOffer
+     */
+    public function saveCalculationPosition(
+        ?int $orderNumber = null,
+        ?string $name = null,
+        ?string $externalDescription = null,
+        ?string $internalDescription = null,
+        ?array $project = null,
+        ?array $subproject = null,
+        ?array $customer = null,
+        ?bool $isExternalService = null,
+        ?bool $isServiceNeeded = null,
+        ?string $displayPath = null,
+        ?int $quantity = null,
+        float|int|null $salePrice = null,
+        float|int|null $purchasePrice = null,
+        float|int|null $totalCalculation = null,
+        ?array $unit = null,
+        ?array $service = null,
+        ?bool $isBillable = null,
+        ?bool $isOptional = null,
+        ?bool $isPrintable = null,
+        ?bool $hourClosed = null,
+        ?int $accountId = null,
+        ?int $costCenterId = null,
+        ?int $createdBy = null,
+        ?int $modifiedBy = null,
+        ?int $deletedBy = null,
+        ?string $createdAt = null,
+        ?string $modifiedAt = null,
+        ?string $deletedAt = null,
+        ?int $percentageMode = null,
+        ?bool $isPercentageGlobal = null,
+        ?string $serviceSource = null,
+        ?array $taxRate = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        float|int|null $totalOffer = null,
+        ?string $rsas = null,
+        ?string $lastRsaDate = null,
+        ?bool $cpIsCleared = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveCalculationPosition($orderNumber, $name, $externalDescription, $internalDescription, $project, $subproject, $customer, $isExternalService, $isServiceNeeded, $displayPath, $quantity, $salePrice, $purchasePrice, $totalCalculation, $unit, $service, $isBillable, $isOptional, $isPrintable, $hourClosed, $accountId, $costCenterId, $createdBy, $modifiedBy, $deletedBy, $createdAt, $modifiedAt, $deletedAt, $percentageMode, $isPercentageGlobal, $serviceSource, $taxRate, $id, $path, $etag, $isDeleted, $totalOffer, $rsas, $lastRsaDate, $cpIsCleared, $className));
     }
 
     /**
@@ -61,11 +108,56 @@ class CalculationPositions extends Resource
     }
 
     /**
-     * @param int $id Calculation position ID
+     * @param int       $id               Calculation position ID
+     * @param float|int $salePrice
+     * @param float|int $purchasePrice
+     * @param float|int $totalCalculation
+     * @param float|int $totalOffer
      */
-    public function updateCalculationPosition(int $id): Response
-    {
-        return $this->connector->send(new UpdateCalculationPosition($id));
+    public function updateCalculationPosition(
+        int $id,
+        ?int $orderNumber = null,
+        ?string $name = null,
+        ?string $externalDescription = null,
+        ?string $internalDescription = null,
+        ?array $project = null,
+        ?array $subproject = null,
+        ?array $customer = null,
+        ?bool $isExternalService = null,
+        ?bool $isServiceNeeded = null,
+        ?string $displayPath = null,
+        ?int $quantity = null,
+        float|int|null $salePrice = null,
+        float|int|null $purchasePrice = null,
+        float|int|null $totalCalculation = null,
+        ?array $unit = null,
+        ?array $service = null,
+        ?bool $isBillable = null,
+        ?bool $isOptional = null,
+        ?bool $isPrintable = null,
+        ?bool $hourClosed = null,
+        ?int $accountId = null,
+        ?int $costCenterId = null,
+        ?int $createdBy = null,
+        ?int $modifiedBy = null,
+        ?int $deletedBy = null,
+        ?string $createdAt = null,
+        ?string $modifiedAt = null,
+        ?string $deletedAt = null,
+        ?int $percentageMode = null,
+        ?bool $isPercentageGlobal = null,
+        ?string $serviceSource = null,
+        ?array $taxRate = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        float|int|null $totalOffer = null,
+        ?string $rsas = null,
+        ?string $lastRsaDate = null,
+        ?bool $cpIsCleared = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateCalculationPosition($id, $orderNumber, $name, $externalDescription, $internalDescription, $project, $subproject, $customer, $isExternalService, $isServiceNeeded, $displayPath, $quantity, $salePrice, $purchasePrice, $totalCalculation, $unit, $service, $isBillable, $isOptional, $isPrintable, $hourClosed, $accountId, $costCenterId, $createdBy, $modifiedBy, $deletedBy, $createdAt, $modifiedAt, $deletedAt, $percentageMode, $isPercentageGlobal, $serviceSource, $taxRate, $path, $etag, $isDeleted, $totalOffer, $rsas, $lastRsaDate, $cpIsCleared, $className));
     }
 
     /**

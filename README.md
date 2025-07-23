@@ -29,8 +29,8 @@ Password is “API v2 / Troi App” token that can be found in the Troi security
 
 ## Contributing
 
-If you want to contribute to this SDK, you can generate the SDK from the fresh OpenAPI specification using the following
-command:
+`/app` folder contains the Laravel Zero console application that is used to generate the SDK. 
+You can use `build` command to download a fresh version of the OpenAPI specification and generate the SDK files in the `/build` folder:
 
 ```bash
 php application build

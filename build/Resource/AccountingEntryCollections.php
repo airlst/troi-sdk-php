@@ -29,9 +29,21 @@ class AccountingEntryCollections extends Resource
         return $this->connector->send(new FetchAllAccountingEntryCollectionsForTheGivenClientId($clientId, $type, $year));
     }
 
-    public function saveAccountingEntryCollections(): Response
-    {
-        return $this->connector->send(new SaveAccountingEntryCollections());
+    public function saveAccountingEntryCollections(
+        ?array $client = null,
+        ?string $fromDate = null,
+        ?string $tillDate = null,
+        ?bool $isLocked = null,
+        ?array $createEmployee = null,
+        ?string $createDate = null,
+        ?int $type = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveAccountingEntryCollections($client, $fromDate, $tillDate, $isLocked, $createEmployee, $createDate, $type, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -45,9 +57,21 @@ class AccountingEntryCollections extends Resource
     /**
      * @param int $id Accounting entry collection id
      */
-    public function updateAccountingEntryCollection(int $id): Response
-    {
-        return $this->connector->send(new UpdateAccountingEntryCollection($id));
+    public function updateAccountingEntryCollection(
+        int $id,
+        ?array $client = null,
+        ?string $fromDate = null,
+        ?string $tillDate = null,
+        ?bool $isLocked = null,
+        ?array $createEmployee = null,
+        ?string $createDate = null,
+        ?int $type = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateAccountingEntryCollection($id, $client, $fromDate, $tillDate, $isLocked, $createEmployee, $createDate, $type, $path, $etag, $isDeleted, $className));
     }
 
     /**

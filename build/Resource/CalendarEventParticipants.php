@@ -23,9 +23,24 @@ class CalendarEventParticipants extends Resource
         return $this->connector->send(new FetchAllCalendarEventParticipants($calendarEventId, $employeeId));
     }
 
-    public function saveCalendarEventParticipants(): Response
-    {
-        return $this->connector->send(new SaveCalendarEventParticipants());
+    /**
+     * @param string $acceptanceState `A` = calendar event acceptance state accepted
+     *                                `D` = calendar event acceptance state declined
+     *                                `U` = calendar event acceptance state unknown
+     * @param string $path            /calendarEventParticipants/1
+     */
+    public function saveCalendarEventParticipants(
+        ?array $calendarEvent = null,
+        ?array $employee = null,
+        ?bool $isReadOnly = null,
+        ?string $acceptanceState = null,
+        ?string $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveCalendarEventParticipants($calendarEvent, $employee, $isReadOnly, $acceptanceState, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -37,11 +52,24 @@ class CalendarEventParticipants extends Resource
     }
 
     /**
-     * @param int $id Calendar event participant ID
+     * @param int    $id              Calendar event participant ID
+     * @param string $acceptanceState `A` = calendar event acceptance state accepted
+     *                                `D` = calendar event acceptance state declined
+     *                                `U` = calendar event acceptance state unknown
+     * @param string $path            /calendarEventParticipants/1
      */
-    public function updateCalendarEventParticipant(int $id): Response
-    {
-        return $this->connector->send(new UpdateCalendarEventParticipant($id));
+    public function updateCalendarEventParticipant(
+        int $id,
+        ?array $calendarEvent = null,
+        ?array $employee = null,
+        ?bool $isReadOnly = null,
+        ?string $acceptanceState = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateCalendarEventParticipant($id, $calendarEvent, $employee, $isReadOnly, $acceptanceState, $path, $etag, $isDeleted, $className));
     }
 
     /**

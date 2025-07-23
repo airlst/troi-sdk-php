@@ -47,9 +47,44 @@ class Projects extends Resource
         return $this->connector->send(new FetchAllProjectsFromGivenClient($clientId, $from, $size, $since, $syncItem, $customerId, $customerIsActive, $projectIsInProcess, $projectStatusId, $projectTypeId, $projectLeaderId, $search, $extendedObject));
     }
 
-    public function saveProject(): Response
-    {
-        return $this->connector->send(new SaveProject());
+    public function saveProject(
+        ?string $name = null,
+        ?string $number = null,
+        ?array $client = null,
+        ?array $customer = null,
+        ?string $externalDescription = null,
+        ?string $internalDescription = null,
+        mixed $status = null,
+        ?array $currency = null,
+        ?bool $isApproved = null,
+        ?bool $isBlocked = null,
+        ?array $blockedBy = null,
+        ?array $leader = null,
+        ?array $team = null,
+        ?int $typeId = null,
+        ?int $taxRateId = null,
+        ?int $projectFolderId = null,
+        ?int $foreignServicesCpIp = null,
+        ?array $projectTypes = null,
+        ?array $contact = null,
+        ?int $invoiceRecipientId = null,
+        ?int $invoiceRecipientPersonId = null,
+        ?string $reportingDate = null,
+        ?string $approvedDate = null,
+        ?string $createdBy = null,
+        ?string $modifiedBy = null,
+        ?string $deletedBy = null,
+        ?string $createdAt = null,
+        ?string $modifiedAt = null,
+        ?string $deletedAt = null,
+        ?string $projectIssueTrackerProjectKey = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveProject($name, $number, $client, $customer, $externalDescription, $internalDescription, $status, $currency, $isApproved, $isBlocked, $blockedBy, $leader, $team, $typeId, $taxRateId, $projectFolderId, $foreignServicesCpIp, $projectTypes, $contact, $invoiceRecipientId, $invoiceRecipientPersonId, $reportingDate, $approvedDate, $createdBy, $modifiedBy, $deletedBy, $createdAt, $modifiedAt, $deletedAt, $projectIssueTrackerProjectKey, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -63,9 +98,44 @@ class Projects extends Resource
     /**
      * @param int $id Project ID
      */
-    public function updateProject(int $id): Response
-    {
-        return $this->connector->send(new UpdateProject($id));
+    public function updateProject(
+        int $id,
+        ?string $name = null,
+        ?string $number = null,
+        ?array $client = null,
+        ?array $customer = null,
+        ?string $externalDescription = null,
+        ?string $internalDescription = null,
+        mixed $status = null,
+        ?array $currency = null,
+        ?bool $isApproved = null,
+        ?bool $isBlocked = null,
+        ?array $blockedBy = null,
+        ?array $leader = null,
+        ?array $team = null,
+        ?int $typeId = null,
+        ?int $taxRateId = null,
+        ?int $projectFolderId = null,
+        ?int $foreignServicesCpIp = null,
+        ?array $projectTypes = null,
+        ?array $contact = null,
+        ?int $invoiceRecipientId = null,
+        ?int $invoiceRecipientPersonId = null,
+        ?string $reportingDate = null,
+        ?string $approvedDate = null,
+        ?string $createdBy = null,
+        ?string $modifiedBy = null,
+        ?string $deletedBy = null,
+        ?string $createdAt = null,
+        ?string $modifiedAt = null,
+        ?string $deletedAt = null,
+        ?string $projectIssueTrackerProjectKey = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateProject($id, $name, $number, $client, $customer, $externalDescription, $internalDescription, $status, $currency, $isApproved, $isBlocked, $blockedBy, $leader, $team, $typeId, $taxRateId, $projectFolderId, $foreignServicesCpIp, $projectTypes, $contact, $invoiceRecipientId, $invoiceRecipientPersonId, $reportingDate, $approvedDate, $createdBy, $modifiedBy, $deletedBy, $createdAt, $modifiedAt, $deletedAt, $projectIssueTrackerProjectKey, $path, $etag, $isDeleted, $className));
     }
 
     /**

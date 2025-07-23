@@ -26,9 +26,24 @@ class Absences extends Resource
         return $this->connector->send(new FetchAllAbsencesForTheCurrentEmployeeGivenStartDateAndEndDate($start, $end, $employeeId));
     }
 
-    public function saveAbsenceObject(): Response
-    {
-        return $this->connector->send(new SaveAbsenceObject());
+    public function saveAbsenceObject(
+        ?string $start = null,
+        ?string $end = null,
+        ?string $subject = null,
+        ?string $description = null,
+        ?array $destination = null,
+        ?array $employee = null,
+        ?array $absenceType = null,
+        ?int $halfDay = null,
+        ?int $absenceUnit = null,
+        ?int $absenceHours = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveAbsenceObject($start, $end, $subject, $description, $destination, $employee, $absenceType, $halfDay, $absenceUnit, $absenceHours, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -42,8 +57,23 @@ class Absences extends Resource
     /**
      * @param int $id Absence id
      */
-    public function updateAbsenceObject(int $id): Response
-    {
-        return $this->connector->send(new UpdateAbsenceObject($id));
+    public function updateAbsenceObject(
+        int $id,
+        ?string $start = null,
+        ?string $end = null,
+        ?string $subject = null,
+        ?string $description = null,
+        ?array $destination = null,
+        ?array $employee = null,
+        ?array $absenceType = null,
+        ?int $halfDay = null,
+        ?int $absenceUnit = null,
+        ?int $absenceHours = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateAbsenceObject($id, $start, $end, $subject, $description, $destination, $employee, $absenceType, $halfDay, $absenceUnit, $absenceHours, $path, $etag, $isDeleted, $className));
     }
 }

@@ -39,9 +39,34 @@ class CalendarEvents extends Resource
         return $this->connector->send(new FetchAllCalendarEventsAtTheGivenRange($start, $end, $searchKey, $ownerEmployeeId, $type, $withoutAbsences, $externalId));
     }
 
-    public function saveCalendarEvent(): Response
-    {
-        return $this->connector->send(new SaveCalendarEvent());
+    /**
+     * @param string $start yyyy-mm-dd hh:mm:ss
+     * @param string $end   yyyy-mm-dd hh:mm:ss
+     * @param string $type  `R`=regular, `H`=holiday, `G`=general, `P`=private, `T`=assigment
+     */
+    public function saveCalendarEvent(
+        ?string $start = null,
+        ?string $end = null,
+        ?string $subject = null,
+        ?string $description = null,
+        ?string $location = null,
+        ?array $owner = null,
+        ?string $type = null,
+        ?bool $isPublic = null,
+        ?bool $isImportant = null,
+        ?bool $isExternal = null,
+        ?array $participants = null,
+        ?array $syncParticipants = null,
+        ?int $groupId = null,
+        ?int $reminderMinutesBeforeStart = null,
+        ?string $externalId = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveCalendarEvent($start, $end, $subject, $description, $location, $owner, $type, $isPublic, $isImportant, $isExternal, $participants, $syncParticipants, $groupId, $reminderMinutesBeforeStart, $externalId, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -53,11 +78,34 @@ class CalendarEvents extends Resource
     }
 
     /**
-     * @param int $id Calendar event ID
+     * @param int    $id    Calendar event ID
+     * @param string $start yyyy-mm-dd hh:mm:ss
+     * @param string $end   yyyy-mm-dd hh:mm:ss
+     * @param string $type  `R`=regular, `H`=holiday, `G`=general, `P`=private, `T`=assigment
      */
-    public function updateCalendarEvent(int $id): Response
-    {
-        return $this->connector->send(new UpdateCalendarEvent($id));
+    public function updateCalendarEvent(
+        int $id,
+        ?string $start = null,
+        ?string $end = null,
+        ?string $subject = null,
+        ?string $description = null,
+        ?string $location = null,
+        ?array $owner = null,
+        ?string $type = null,
+        ?bool $isPublic = null,
+        ?bool $isImportant = null,
+        ?bool $isExternal = null,
+        ?array $participants = null,
+        ?array $syncParticipants = null,
+        ?int $groupId = null,
+        ?int $reminderMinutesBeforeStart = null,
+        ?string $externalId = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateCalendarEvent($id, $start, $end, $subject, $description, $location, $owner, $type, $isPublic, $isImportant, $isExternal, $participants, $syncParticipants, $groupId, $reminderMinutesBeforeStart, $externalId, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -77,10 +125,33 @@ class CalendarEvents extends Resource
     }
 
     /**
-     * @param int $id external calendar event ID
+     * @param int    $id    external calendar event ID
+     * @param string $start yyyy-mm-dd hh:mm:ss
+     * @param string $end   yyyy-mm-dd hh:mm:ss
+     * @param string $type  `R`=regular, `H`=holiday, `G`=general, `P`=private, `T`=assigment
      */
-    public function updateCalendarEventByExternalId(int $id): Response
-    {
-        return $this->connector->send(new UpdateCalendarEventByExternalId($id));
+    public function updateCalendarEventByExternalId(
+        int $id,
+        ?string $start = null,
+        ?string $end = null,
+        ?string $subject = null,
+        ?string $description = null,
+        ?string $location = null,
+        ?array $owner = null,
+        ?string $type = null,
+        ?bool $isPublic = null,
+        ?bool $isImportant = null,
+        ?bool $isExternal = null,
+        ?array $participants = null,
+        ?array $syncParticipants = null,
+        ?int $groupId = null,
+        ?int $reminderMinutesBeforeStart = null,
+        ?string $externalId = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateCalendarEventByExternalId($id, $start, $end, $subject, $description, $location, $owner, $type, $isPublic, $isImportant, $isExternal, $participants, $syncParticipants, $groupId, $reminderMinutesBeforeStart, $externalId, $path, $etag, $isDeleted, $className));
     }
 }

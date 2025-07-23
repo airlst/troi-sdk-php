@@ -27,9 +27,26 @@ class Accounts extends Resource
         return $this->connector->send(new FetchAllAccountsForTheGivenClientId($clientId, $accountGroupId, $accountIsCashOrBank));
     }
 
-    public function saveAccount(): Response
-    {
-        return $this->connector->send(new SaveAccount());
+    public function saveAccount(
+        ?string $name = null,
+        ?int $number = null,
+        ?array $client = null,
+        ?array $defaultContraAccount = null,
+        ?array $summaryAccount = null,
+        ?bool $isActive = null,
+        ?bool $isCashDeskAccount = null,
+        ?bool $isBankAccount = null,
+        ?bool $isAutomaticAccount = null,
+        ?bool $isLockedForDatev = null,
+        ?array $taxRate = null,
+        ?array $accountGroup = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveAccount($name, $number, $client, $defaultContraAccount, $summaryAccount, $isActive, $isCashDeskAccount, $isBankAccount, $isAutomaticAccount, $isLockedForDatev, $taxRate, $accountGroup, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -43,9 +60,26 @@ class Accounts extends Resource
     /**
      * @param int $id Account id
      */
-    public function updateAccount(int $id): Response
-    {
-        return $this->connector->send(new UpdateAccount($id));
+    public function updateAccount(
+        int $id,
+        ?string $name = null,
+        ?int $number = null,
+        ?array $client = null,
+        ?array $defaultContraAccount = null,
+        ?array $summaryAccount = null,
+        ?bool $isActive = null,
+        ?bool $isCashDeskAccount = null,
+        ?bool $isBankAccount = null,
+        ?bool $isAutomaticAccount = null,
+        ?bool $isLockedForDatev = null,
+        ?array $taxRate = null,
+        ?array $accountGroup = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateAccount($id, $name, $number, $client, $defaultContraAccount, $summaryAccount, $isActive, $isCashDeskAccount, $isBankAccount, $isAutomaticAccount, $isLockedForDatev, $taxRate, $accountGroup, $path, $etag, $isDeleted, $className));
     }
 
     /**

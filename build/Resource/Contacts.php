@@ -67,9 +67,58 @@ class Contacts extends Resource
         return $this->connector->send(new FetchAllContacts($syncItem, $from, $size, $since, $favoritesOnly, $contactType, $search, $searchField, $withCustomFields, $parentId, $isAssociatedWithCustomer, $onlyInactive, $externalId));
     }
 
-    public function saveContact(): Response
-    {
-        return $this->connector->send(new SaveContact());
+    public function saveContact(
+        ?string $type = null,
+        ?string $name = null,
+        ?string $salutation = null,
+        ?string $name1 = null,
+        ?string $name2 = null,
+        ?string $name3 = null,
+        ?array $categories = null,
+        ?string $title = null,
+        ?string $privateFax = null,
+        ?string $privateMail = null,
+        ?string $privateMobile = null,
+        ?string $privatePhone = null,
+        ?string $privateWeb = null,
+        ?string $privateAddressCity = null,
+        ?string $privateAddressCountry = null,
+        ?string $privateAddressCountryIso = null,
+        ?string $privateAddressState = null,
+        ?string $privateAddressStreet = null,
+        ?string $privateAddressZipCode = null,
+        ?string $birthday = null,
+        ?string $position = null,
+        ?string $officePhone = null,
+        ?string $officeMobile = null,
+        ?string $officeFax = null,
+        ?string $officeMail = null,
+        ?string $companyPhone = null,
+        ?string $companyFax = null,
+        ?string $companyWeb = null,
+        ?string $companyMail = null,
+        ?string $companyAddressCity = null,
+        ?string $companyAddressCountry = null,
+        ?string $companyAddressCountryIso = null,
+        ?string $companyAddressState = null,
+        ?string $companyAddressStreet = null,
+        ?string $companyAddressZipCode = null,
+        ?string $remark = null,
+        ?array $parent = null,
+        ?array $employee = null,
+        ?array $department = null,
+        ?bool $isFavorite = null,
+        ?bool $isInactive = null,
+        ?string $externalId = null,
+        ?int $accessGroup = null,
+        ?array $createdBy = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveContact($type, $name, $salutation, $name1, $name2, $name3, $categories, $title, $privateFax, $privateMail, $privateMobile, $privatePhone, $privateWeb, $privateAddressCity, $privateAddressCountry, $privateAddressCountryIso, $privateAddressState, $privateAddressStreet, $privateAddressZipCode, $birthday, $position, $officePhone, $officeMobile, $officeFax, $officeMail, $companyPhone, $companyFax, $companyWeb, $companyMail, $companyAddressCity, $companyAddressCountry, $companyAddressCountryIso, $companyAddressState, $companyAddressStreet, $companyAddressZipCode, $remark, $parent, $employee, $department, $isFavorite, $isInactive, $externalId, $accessGroup, $createdBy, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -83,9 +132,58 @@ class Contacts extends Resource
     /**
      * @param int $id Contact ID
      */
-    public function updateContact(int $id): Response
-    {
-        return $this->connector->send(new UpdateContact($id));
+    public function updateContact(
+        int $id,
+        ?string $type = null,
+        ?string $name = null,
+        ?string $salutation = null,
+        ?string $name1 = null,
+        ?string $name2 = null,
+        ?string $name3 = null,
+        ?array $categories = null,
+        ?string $title = null,
+        ?string $privateFax = null,
+        ?string $privateMail = null,
+        ?string $privateMobile = null,
+        ?string $privatePhone = null,
+        ?string $privateWeb = null,
+        ?string $privateAddressCity = null,
+        ?string $privateAddressCountry = null,
+        ?string $privateAddressCountryIso = null,
+        ?string $privateAddressState = null,
+        ?string $privateAddressStreet = null,
+        ?string $privateAddressZipCode = null,
+        ?string $birthday = null,
+        ?string $position = null,
+        ?string $officePhone = null,
+        ?string $officeMobile = null,
+        ?string $officeFax = null,
+        ?string $officeMail = null,
+        ?string $companyPhone = null,
+        ?string $companyFax = null,
+        ?string $companyWeb = null,
+        ?string $companyMail = null,
+        ?string $companyAddressCity = null,
+        ?string $companyAddressCountry = null,
+        ?string $companyAddressCountryIso = null,
+        ?string $companyAddressState = null,
+        ?string $companyAddressStreet = null,
+        ?string $companyAddressZipCode = null,
+        ?string $remark = null,
+        ?array $parent = null,
+        ?array $employee = null,
+        ?array $department = null,
+        ?bool $isFavorite = null,
+        ?bool $isInactive = null,
+        ?string $externalId = null,
+        ?int $accessGroup = null,
+        ?array $createdBy = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateContact($id, $type, $name, $salutation, $name1, $name2, $name3, $categories, $title, $privateFax, $privateMail, $privateMobile, $privatePhone, $privateWeb, $privateAddressCity, $privateAddressCountry, $privateAddressCountryIso, $privateAddressState, $privateAddressStreet, $privateAddressZipCode, $birthday, $position, $officePhone, $officeMobile, $officeFax, $officeMail, $companyPhone, $companyFax, $companyWeb, $companyMail, $companyAddressCity, $companyAddressCountry, $companyAddressCountryIso, $companyAddressState, $companyAddressStreet, $companyAddressZipCode, $remark, $parent, $employee, $department, $isFavorite, $isInactive, $externalId, $accessGroup, $createdBy, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -107,9 +205,58 @@ class Contacts extends Resource
     /**
      * @param int $id external contact ID
      */
-    public function updateContactByExternalId(int $id): Response
-    {
-        return $this->connector->send(new UpdateContactByExternalId($id));
+    public function updateContactByExternalId(
+        int $id,
+        ?string $type = null,
+        ?string $name = null,
+        ?string $salutation = null,
+        ?string $name1 = null,
+        ?string $name2 = null,
+        ?string $name3 = null,
+        ?array $categories = null,
+        ?string $title = null,
+        ?string $privateFax = null,
+        ?string $privateMail = null,
+        ?string $privateMobile = null,
+        ?string $privatePhone = null,
+        ?string $privateWeb = null,
+        ?string $privateAddressCity = null,
+        ?string $privateAddressCountry = null,
+        ?string $privateAddressCountryIso = null,
+        ?string $privateAddressState = null,
+        ?string $privateAddressStreet = null,
+        ?string $privateAddressZipCode = null,
+        ?string $birthday = null,
+        ?string $position = null,
+        ?string $officePhone = null,
+        ?string $officeMobile = null,
+        ?string $officeFax = null,
+        ?string $officeMail = null,
+        ?string $companyPhone = null,
+        ?string $companyFax = null,
+        ?string $companyWeb = null,
+        ?string $companyMail = null,
+        ?string $companyAddressCity = null,
+        ?string $companyAddressCountry = null,
+        ?string $companyAddressCountryIso = null,
+        ?string $companyAddressState = null,
+        ?string $companyAddressStreet = null,
+        ?string $companyAddressZipCode = null,
+        ?string $remark = null,
+        ?array $parent = null,
+        ?array $employee = null,
+        ?array $department = null,
+        ?bool $isFavorite = null,
+        ?bool $isInactive = null,
+        ?string $externalId = null,
+        ?int $accessGroup = null,
+        ?array $createdBy = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateContactByExternalId($id, $type, $name, $salutation, $name1, $name2, $name3, $categories, $title, $privateFax, $privateMail, $privateMobile, $privatePhone, $privateWeb, $privateAddressCity, $privateAddressCountry, $privateAddressCountryIso, $privateAddressState, $privateAddressStreet, $privateAddressZipCode, $birthday, $position, $officePhone, $officeMobile, $officeFax, $officeMail, $companyPhone, $companyFax, $companyWeb, $companyMail, $companyAddressCity, $companyAddressCountry, $companyAddressCountryIso, $companyAddressState, $companyAddressStreet, $companyAddressZipCode, $remark, $parent, $employee, $department, $isFavorite, $isInactive, $externalId, $accessGroup, $createdBy, $path, $etag, $isDeleted, $className));
     }
 
     /**

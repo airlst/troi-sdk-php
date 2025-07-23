@@ -22,9 +22,17 @@ class AccountGroups extends Resource
         return $this->connector->send(new FetchAllAccountGroupsForTheGivenClientId($clientId));
     }
 
-    public function saveAccountGroupsObject(): Response
-    {
-        return $this->connector->send(new SaveAccountGroupsObject());
+    public function saveAccountGroupsObject(
+        ?string $name = null,
+        ?array $client = null,
+        ?int $type = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveAccountGroupsObject($name, $client, $type, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -38,9 +46,17 @@ class AccountGroups extends Resource
     /**
      * @param int $id Account group id
      */
-    public function updateAccountGroupsObject(int $id): Response
-    {
-        return $this->connector->send(new UpdateAccountGroupsObject($id));
+    public function updateAccountGroupsObject(
+        int $id,
+        ?string $name = null,
+        ?array $client = null,
+        ?int $type = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateAccountGroupsObject($id, $name, $client, $type, $path, $etag, $isDeleted, $className));
     }
 
     /**

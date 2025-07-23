@@ -14,6 +14,7 @@ use LaravelZero\Framework\Commands\Command;
 use Nette\PhpGenerator\PhpFile;
 use Troi\V2\SDKBuilder\Generators\ConnectorGenerator;
 use Troi\V2\SDKBuilder\Generators\ResourceGenerator;
+use Troi\V2\SDKBuilder\Parsers\OpenApiParser;
 
 use function base_path;
 use function dirname;
@@ -29,6 +30,7 @@ use function str_replace;
 class Build extends Command
 {
     protected const string NAMESPACE = 'Troi\V2';
+    protected const string TYPE = 'openapi';
     protected $signature = 'build {spec-url=https://dist.troi.software/troi/doc/api/v2-openapi.json} {--no-download}';
     protected $description = 'Build an SDK';
 
@@ -72,7 +74,9 @@ class Build extends Command
             connectorGenerator: new ConnectorGenerator($config),
         );
 
-        $this->dumpGeneratedFiles($generator->run(Factory::parse('openapi', $specFile)));
+        Factory::registerParser(self::TYPE, OpenApiParser::class);
+
+        $this->dumpGeneratedFiles($generator->run(Factory::parse(self::TYPE, $specFile)));
     }
 
     protected function dumpGeneratedFiles(GeneratedCode $result): void

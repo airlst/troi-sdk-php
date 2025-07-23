@@ -37,9 +37,28 @@ class Billing extends Resource
         return $this->connector->send(new FetchAllBillingsForTheGivenParameter($clientId, $calculationPositionId, $projectId, $subprojectId, $startDate, $endDate, $extendedObject, $fillsyncitems));
     }
 
-    public function saveBilling(): Response
-    {
-        return $this->connector->send(new SaveBilling());
+    /**
+     * @param float|int $quantity
+     */
+    public function saveBilling(
+        mixed $client = null,
+        mixed $calculationPosition = null,
+        ?array $service = null,
+        mixed $employee = null,
+        ?string $date = null,
+        float|int|null $quantity = null,
+        ?string $remark = null,
+        ?bool $isBillable = null,
+        ?bool $isBilled = null,
+        ?bool $isInvoiced = null,
+        ?bool $isApproved = null,
+        ?int $id = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new SaveBilling($client, $calculationPosition, $service, $employee, $date, $quantity, $remark, $isBillable, $isBilled, $isInvoiced, $isApproved, $id, $path, $etag, $isDeleted, $className));
     }
 
     /**
@@ -52,11 +71,28 @@ class Billing extends Resource
     }
 
     /**
-     * @param int $id Billing id
+     * @param int       $id       Billing id
+     * @param float|int $quantity
      */
-    public function updateBilling(int $id): Response
-    {
-        return $this->connector->send(new UpdateBilling($id));
+    public function updateBilling(
+        int $id,
+        mixed $client = null,
+        mixed $calculationPosition = null,
+        ?array $service = null,
+        mixed $employee = null,
+        ?string $date = null,
+        float|int|null $quantity = null,
+        ?string $remark = null,
+        ?bool $isBillable = null,
+        ?bool $isBilled = null,
+        ?bool $isInvoiced = null,
+        ?bool $isApproved = null,
+        ?string $path = null,
+        ?string $etag = null,
+        ?bool $isDeleted = null,
+        ?string $className = null,
+    ): Response {
+        return $this->connector->send(new UpdateBilling($id, $client, $calculationPosition, $service, $employee, $date, $quantity, $remark, $isBillable, $isBilled, $isInvoiced, $isApproved, $path, $etag, $isDeleted, $className));
     }
 
     /**

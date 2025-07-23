@@ -20,10 +20,41 @@ class SaveCalendarEventParticipants extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    public function __construct() {}
+    /**
+     * @param string|null $acceptanceState `A` = calendar event acceptance state accepted
+     *                                     `D` = calendar event acceptance state declined
+     *                                     `U` = calendar event acceptance state unknown
+     * @param string|null $path            /calendarEventParticipants/1
+     */
+    public function __construct(
+        protected ?array $calendarEvent = null,
+        protected ?array $employee = null,
+        protected ?bool $isReadOnly = null,
+        protected ?string $acceptanceState = null,
+        protected ?string $id = null,
+        protected ?string $path = null,
+        protected ?string $etag = null,
+        protected ?bool $isDeleted = null,
+        protected ?string $className = null,
+    ) {}
 
     public function resolveEndpoint(): string
     {
         return '/calendarEventParticipants';
+    }
+
+    public function defaultBody(): array
+    {
+        return array_filter([
+            'CalendarEvent' => $this->calendarEvent,
+            'Employee' => $this->employee,
+            'IsReadOnly' => $this->isReadOnly,
+            'AcceptanceState' => $this->acceptanceState,
+            'Id' => $this->id,
+            'Path' => $this->path,
+            'ETag' => $this->etag,
+            'IsDeleted' => $this->isDeleted,
+            'ClassName' => $this->className,
+        ]);
     }
 }
