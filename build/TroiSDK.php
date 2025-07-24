@@ -6,6 +6,7 @@ namespace Troi\V2;
 
 use Saloon\Http\Auth\BasicAuthenticator;
 use Saloon\Http\Connector;
+use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
 use Troi\V2\Resource\Absences;
 use Troi\V2\Resource\AccountGroups;
 use Troi\V2\Resource\AccountingEntries;
@@ -37,6 +38,8 @@ use Troi\V2\Resource\Suppliers;
  */
 class TroiSDK extends Connector
 {
+    use AlwaysThrowOnErrors;
+
     public function __construct(
         protected readonly string $customer,
         protected readonly string $username,
