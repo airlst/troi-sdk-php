@@ -9,6 +9,8 @@ use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
+use function is_null;
+
 /**
  * Save calendar event participants.
  *
@@ -55,6 +57,6 @@ class SaveCalendarEventParticipants extends Request implements HasBody
             'ETag' => $this->etag,
             'IsDeleted' => $this->isDeleted,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

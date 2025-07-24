@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Categories;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Update contact categorie.
  *
@@ -45,6 +47,6 @@ class UpdateContactCategorie extends Request
             'ETag' => $this->etag,
             'IsDeleted' => $this->isDeleted,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

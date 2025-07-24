@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Accounts;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all Accounts for the given clientId.
  *
@@ -38,6 +40,6 @@ class FetchAllAccountsForTheGivenClientId extends Request
             'clientId' => $this->clientId,
             'accountGroupId' => $this->accountGroupId,
             'account_is_cash_or_bank' => $this->accountIsCashOrBank,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

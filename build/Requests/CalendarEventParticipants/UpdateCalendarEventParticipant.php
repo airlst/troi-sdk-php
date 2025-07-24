@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\CalendarEventParticipants;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Update calendar event participant.
  *
@@ -51,6 +53,6 @@ class UpdateCalendarEventParticipant extends Request
             'ETag' => $this->etag,
             'IsDeleted' => $this->isDeleted,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

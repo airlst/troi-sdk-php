@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Contacts;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all contacts.
  *
@@ -85,6 +87,6 @@ class FetchAllContacts extends Request
             'isAssociatedWithCustomer' => $this->isAssociatedWithCustomer,
             'onlyInactive' => $this->onlyInactive,
             'externalId' => $this->externalId,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

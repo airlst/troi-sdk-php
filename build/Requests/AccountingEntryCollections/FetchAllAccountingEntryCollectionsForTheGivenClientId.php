@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\AccountingEntryCollections;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all accounting entry collections for the given clientId.
  *
@@ -36,6 +38,6 @@ class FetchAllAccountingEntryCollectionsForTheGivenClientId extends Request
 
     protected function defaultQuery(): array
     {
-        return array_filter(['clientId' => $this->clientId, 'type' => $this->type, 'year' => $this->year]);
+        return array_filter(['clientId' => $this->clientId, 'type' => $this->type, 'year' => $this->year], fn (mixed $value): bool => ! is_null($value));
     }
 }

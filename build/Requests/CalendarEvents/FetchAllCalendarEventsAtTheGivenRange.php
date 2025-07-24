@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\CalendarEvents;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all calendar events at the given range.
  *
@@ -52,6 +54,6 @@ class FetchAllCalendarEventsAtTheGivenRange extends Request
             'type' => $this->type,
             'withoutAbsences' => $this->withoutAbsences,
             'externalId' => $this->externalId,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

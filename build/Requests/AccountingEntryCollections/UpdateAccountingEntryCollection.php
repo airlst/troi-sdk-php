@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\AccountingEntryCollections;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Update accounting entry collection.
  *
@@ -53,6 +55,6 @@ class UpdateAccountingEntryCollection extends Request
             'ETag' => $this->etag,
             'IsDeleted' => $this->isDeleted,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

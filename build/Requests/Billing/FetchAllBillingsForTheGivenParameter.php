@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Billing;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all billings for the given parameter.
  *
@@ -53,6 +55,6 @@ class FetchAllBillingsForTheGivenParameter extends Request
             'endDate' => $this->endDate,
             'extendedObject' => $this->extendedObject,
             'fillsyncitems' => $this->fillsyncitems,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

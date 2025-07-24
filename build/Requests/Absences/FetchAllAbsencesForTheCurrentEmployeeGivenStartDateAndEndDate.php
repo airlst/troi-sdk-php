@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Absences;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all absences for the current employee given Start Date and End Date.
  *
@@ -34,6 +36,6 @@ class FetchAllAbsencesForTheCurrentEmployeeGivenStartDateAndEndDate extends Requ
 
     protected function defaultQuery(): array
     {
-        return array_filter(['start' => $this->start, 'end' => $this->end, 'employeeId' => $this->employeeId]);
+        return array_filter(['start' => $this->start, 'end' => $this->end, 'employeeId' => $this->employeeId], fn (mixed $value): bool => ! is_null($value));
     }
 }

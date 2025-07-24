@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Customers;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Update customer.
  *
@@ -68,6 +70,6 @@ class UpdateCustomer extends Request
             'ETag' => $this->etag,
             'IsDeleted' => $this->isDeleted,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

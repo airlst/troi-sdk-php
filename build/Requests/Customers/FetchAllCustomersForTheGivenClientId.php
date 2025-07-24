@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Customers;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all customers for the given client ID.
  *
@@ -34,6 +36,6 @@ class FetchAllCustomersForTheGivenClientId extends Request
 
     protected function defaultQuery(): array
     {
-        return array_filter(['clientId' => $this->clientId, 'syncItem' => $this->syncItem, 'isActive' => $this->isActive]);
+        return array_filter(['clientId' => $this->clientId, 'syncItem' => $this->syncItem, 'isActive' => $this->isActive], fn (mixed $value): bool => ! is_null($value));
     }
 }

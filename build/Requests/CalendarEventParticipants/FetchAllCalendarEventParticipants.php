@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\CalendarEventParticipants;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all calendar event participants.
  *
@@ -32,6 +34,6 @@ class FetchAllCalendarEventParticipants extends Request
 
     protected function defaultQuery(): array
     {
-        return array_filter(['calendarEventId' => $this->calendarEventId, 'employeeId' => $this->employeeId]);
+        return array_filter(['calendarEventId' => $this->calendarEventId, 'employeeId' => $this->employeeId], fn (mixed $value): bool => ! is_null($value));
     }
 }

@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\AccountingEntries;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all Accounting Entries for the given clientId.
  *
@@ -41,6 +43,6 @@ class FetchAllAccountingEntriesForTheGivenClientId extends Request
             'cpId' => $this->cpId,
             'projectId' => $this->projectId,
             'accountingEntryCollectionId' => $this->accountingEntryCollectionId,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

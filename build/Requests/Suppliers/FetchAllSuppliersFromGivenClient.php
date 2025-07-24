@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Suppliers;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all suppliers from given client.
  *
@@ -44,6 +46,6 @@ class FetchAllSuppliersFromGivenClient extends Request
             'search' => $this->search,
             'isActive' => $this->isActive,
             'showReferenceDetails' => $this->showReferenceDetails,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

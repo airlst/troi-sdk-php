@@ -30,6 +30,6 @@ class FetchAllAccountGroupsForTheGivenClientId extends Request
 
     protected function defaultQuery(): array
     {
-        return array_filter(['clientId' => $this->clientId]);
+        return ['clientId' => $this->clientId];
     }
 }

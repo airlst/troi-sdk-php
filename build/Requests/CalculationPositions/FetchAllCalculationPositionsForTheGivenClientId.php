@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\CalculationPositions;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all calculation positions for the given client ID.
  *
@@ -67,6 +69,6 @@ class FetchAllCalculationPositionsForTheGivenClientId extends Request
             'bookKeeping' => $this->bookKeeping,
             'projectIds' => $this->projectIds,
             'issueTrackerProjectKey' => $this->issueTrackerProjectKey,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

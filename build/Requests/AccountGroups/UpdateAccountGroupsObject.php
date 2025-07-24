@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\AccountGroups;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Update Account Groups Object.
  *
@@ -45,6 +47,6 @@ class UpdateAccountGroupsObject extends Request
             'ETag' => $this->etag,
             'IsDeleted' => $this->isDeleted,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

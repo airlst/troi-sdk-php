@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use LaravelZero\Framework\Commands\Command;
 use Nette\PhpGenerator\PhpFile;
 use Troi\V2\SDKBuilder\Generators\ConnectorGenerator;
+use Troi\V2\SDKBuilder\Generators\RequestGenerator;
 use Troi\V2\SDKBuilder\Generators\ResourceGenerator;
 use Troi\V2\SDKBuilder\Parsers\OpenApiParser;
 
@@ -70,6 +71,7 @@ class Build extends Command
 
         $generator = new CodeGenerator(
             $config,
+            requestGenerator: new RequestGenerator($config),
             resourceGenerator: new ResourceGenerator($config),
             connectorGenerator: new ConnectorGenerator($config),
         );

@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Suppliers;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Update supplier.
  *
@@ -57,6 +59,6 @@ class UpdateSupplier extends Request
             'ETag' => $this->etag,
             'IsDeleted' => $this->isDeleted,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Billing;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Update Billing.
  *
@@ -61,6 +63,6 @@ class UpdateBilling extends Request
             'ETag' => $this->etag,
             'IsDeleted' => $this->isDeleted,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

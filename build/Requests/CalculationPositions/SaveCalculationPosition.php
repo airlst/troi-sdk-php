@@ -9,6 +9,8 @@ use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
+use function is_null;
+
 /**
  * Save Calculation Position.
  *
@@ -113,6 +115,6 @@ class SaveCalculationPosition extends Request implements HasBody
             'lastRsaDate' => $this->lastRsaDate,
             'cpIsCleared' => $this->cpIsCleared,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

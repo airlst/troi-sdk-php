@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\CalculationPositions;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Update calculation position.
  *
@@ -111,6 +113,6 @@ class UpdateCalculationPosition extends Request
             'lastRsaDate' => $this->lastRsaDate,
             'cpIsCleared' => $this->cpIsCleared,
             'ClassName' => $this->className,
-        ]);
+        ], fn (mixed $value): bool => ! is_null($value));
     }
 }

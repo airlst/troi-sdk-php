@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Billing;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch Billing for the given Billing ID.
  *
@@ -32,6 +34,6 @@ class FetchBillingForTheGivenBillingId extends Request
 
     protected function defaultQuery(): array
     {
-        return array_filter(['extendedObject' => $this->extendedObject]);
+        return array_filter(['extendedObject' => $this->extendedObject], fn (mixed $value): bool => ! is_null($value));
     }
 }

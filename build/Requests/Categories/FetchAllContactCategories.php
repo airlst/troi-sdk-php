@@ -7,6 +7,8 @@ namespace Troi\V2\Requests\Categories;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
+use function is_null;
+
 /**
  * Fetch all contact categories.
  *
@@ -36,6 +38,6 @@ class FetchAllContactCategories extends Request
 
     protected function defaultQuery(): array
     {
-        return array_filter(['contactId' => $this->contactId, 'categoryId' => $this->categoryId, 'size' => $this->size, 'from' => $this->from]);
+        return array_filter(['contactId' => $this->contactId, 'categoryId' => $this->categoryId, 'size' => $this->size, 'from' => $this->from], fn (mixed $value): bool => ! is_null($value));
     }
 }
