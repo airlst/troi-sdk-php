@@ -11,21 +11,21 @@
     "homepage": "https://github.com/airlst/troi-sdk-php",
     "require": {
         "php": "^8.3",
-        "saloonphp/saloon": "^3.0"
+        "saloonphp/saloon": "^4.0"
     },
     "require-dev": {
         "airlst/php-cs-fixer-config": "^3.6",
         "airlst/phpstan-config": "dev-master",
         "airlst/rector-config": "dev-master",
-        "crescat-io/saloon-sdk-generator": "^1.10",
+        "crescat-io/saloon-sdk-generator": "^1.6",
         "ergebnis/composer-normalize": "^2.47",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.75",
-        "illuminate/database": "^10.0",
-        "laravel-zero/framework": "^10.0",
+        "illuminate/database": "^12.0",
+        "laravel-zero/framework": "^12.0",
         "laravel/pint": "^1.8",
         "mockery/mockery": "^1.5.1",
-        "pestphp/pest": "^2.5",
+        "pestphp/pest": "^3.8",
         "phpstan/phpstan": "^2.1",
         "rector/swiss-knife": "^2.2"
     },

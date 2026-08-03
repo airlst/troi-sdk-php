@@ -15,12 +15,15 @@ use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Auth\BasicAuthenticator;
 use Saloon\Http\Connector;
 use Saloon\Traits\Plugins\AlwaysThrowOnErrors;
+use Troi\V2\SDKBuilder\Generators\Concerns\RequiresConfig;
 
 use function is_null;
 use function sprintf;
 
 class ConnectorGenerator extends Generator
 {
+    use RequiresConfig;
+
     public function generate(ApiSpecification $specification): PhpFile|array
     {
         return $this->generateConnectorClass($specification) ?? [];
@@ -28,7 +31,7 @@ class ConnectorGenerator extends Generator
 
     protected function generateConnectorClass(ApiSpecification $specification): ?PhpFile
     {
-        $classType = new ClassType($this->config->connectorName);
+        $classType = new ClassType($this->config()->connectorName);
         $classType->setExtends(Connector::class)
             ->addTrait(AlwaysThrowOnErrors::class);
 
@@ -62,7 +65,7 @@ class ConnectorGenerator extends Generator
 
         $classType->addMethod('resolveBaseUrl')
             ->setReturnType('string')
-            ->setBody(sprintf('return "%s";', Str::replaceFirst('{customer}', '{$this->customer}', $specification->baseUrl)));
+            ->setBody(sprintf('return "%s";', Str::replaceFirst('{customer}', '{$this->customer}', $specification->baseUrl->url)));
 
         $classType->addMethod('defaultAuth')
             ->setReturnType(BasicAuthenticator::class)
@@ -70,20 +73,20 @@ class ConnectorGenerator extends Generator
             ->setBody('return new BasicAuthenticator($this->username, $this->password);');
 
         $namespace = $classFile
-            ->addNamespace("{$this->config->namespace}")
+            ->addNamespace("{$this->config()->namespace}")
             ->addUse(Connector::class)
             ->addUse(BasicAuthenticator::class)
             ->addUse(AlwaysThrowOnErrors::class);
 
         $collections = collect($specification->endpoints)
-            ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName)) // @phpstan-ignore-line
+            ->map(fn (Endpoint $endpoint): string => NameHelper::connectorClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config()->fallbackResourceName)) // @phpstan-ignore-line
             ->unique()
             ->sort()
             ->all();
 
         foreach ($collections as $collection) {
             $resourceClassName = NameHelper::connectorClassName($collection);
-            $resourceFQN = "{$this->config->namespace}\\{$this->config->resourceNamespaceSuffix}\\{$resourceClassName}";
+            $resourceFQN = "{$this->config()->namespace}\\{$this->config()->resourceNamespaceSuffix}\\{$resourceClassName}";
 
             $namespace->addUse($resourceFQN);
 

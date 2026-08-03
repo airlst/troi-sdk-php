@@ -90,10 +90,7 @@ class Build extends Command
             $this->dumpToFile($result->connectorClass);
         }
 
-        $this->comment("\nBase Resource:");
-        if ($result->resourceBaseClass instanceof PhpFile) {
-            $this->dumpToFile($result->resourceBaseClass);
-        }
+        // The generator no longer emits a base resource class. build/Resource.php is committed instead.
 
         $this->comment("\nResources:");
         foreach ($result->resourceClasses as $resourceClass) {

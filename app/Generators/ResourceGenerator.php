@@ -15,12 +15,15 @@ use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile;
 use Saloon\Http\Response;
+use Troi\V2\SDKBuilder\Generators\Concerns\RequiresConfig;
 
 use function in_array;
 use function sprintf;
 
 class ResourceGenerator extends Generator
 {
+    use RequiresConfig;
+
     public function generate(ApiSpecification $specification): PhpFile|array
     {
         return $this->generateResourceClasses($specification);
@@ -33,12 +36,12 @@ class ResourceGenerator extends Generator
     {
         $classType = new ClassType($resourceName);
 
-        $classType->setExtends("{$this->config->namespace}\\Resource");
+        $classType->setExtends("{$this->config()->namespace}\\Resource");
 
         $classFile = new PhpFile();
         $namespace = $classFile
-            ->addNamespace("{$this->config->namespace}\\{$this->config->resourceNamespaceSuffix}")
-            ->addUse("{$this->config->namespace}\\Resource");
+            ->addNamespace("{$this->config()->namespace}\\{$this->config()->resourceNamespaceSuffix}")
+            ->addUse("{$this->config()->namespace}\\Resource");
 
         $duplicateCounter = 1;
 
@@ -46,7 +49,7 @@ class ResourceGenerator extends Generator
             $requestClassName = NameHelper::resourceClassName($endpoint->name);
             $methodName = NameHelper::safeVariableName($requestClassName);
             $requestClassNameAlias = $requestClassName === $resourceName ? "{$requestClassName}Request" : null;
-            $requestClassFQN = "{$this->config->namespace}\\{$this->config->requestNamespaceSuffix}\\{$resourceName}\\{$requestClassName}";
+            $requestClassFQN = "{$this->config()->namespace}\\{$this->config()->requestNamespaceSuffix}\\{$resourceName}\\{$requestClassName}";
 
             $namespace
                 ->addUse(Response::class)
@@ -80,7 +83,7 @@ class ResourceGenerator extends Generator
             }
 
             foreach ($endpoint->bodyParameters as $parameter) {
-                if (in_array($parameter->name, $this->config->ignoredBodyParams, true)) {
+                if (in_array($parameter->name, $this->config()->ignoredBodyParams, true)) {
                     continue;
                 }
 
@@ -89,7 +92,7 @@ class ResourceGenerator extends Generator
             }
 
             foreach ($endpoint->queryParameters as $parameter) {
-                if (in_array($parameter->name, $this->config->ignoredQueryParams, true)) {
+                if (in_array($parameter->name, $this->config()->ignoredQueryParams, true)) {
                     continue;
                 }
                 $this->addPropertyToMethod($method, $parameter);
@@ -112,7 +115,7 @@ class ResourceGenerator extends Generator
         $classes = [];
 
         $groupedByCollection = collect($specification->endpoints)->groupBy(fn (Endpoint $endpoint): string => NameHelper::resourceClassName(
-            $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName // @phpstan-ignore-line
+            $endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config()->fallbackResourceName // @phpstan-ignore-line
         ));
 
         foreach ($groupedByCollection as $collection => $items) {
