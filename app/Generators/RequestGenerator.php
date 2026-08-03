@@ -20,6 +20,7 @@ use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method as SaloonHttpMethod;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
+use Troi\V2\SDKBuilder\Generators\Concerns\RequiresConfig;
 use Troi\V2\SDKBuilder\Helpers\MethodGeneratorHelper;
 
 use function collect;
@@ -28,6 +29,8 @@ use function sprintf;
 
 class RequestGenerator extends Generator
 {
+    use RequiresConfig;
+
     public function generate(ApiSpecification $specification): PhpFile|array
     {
         $classes = [];
@@ -42,14 +45,14 @@ class RequestGenerator extends Generator
     protected function generateRequestClass(Endpoint $endpoint): PhpFile
     {
         // @phpstan-ignore-next-line
-        $resourceName = NameHelper::resourceClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config->fallbackResourceName);
+        $resourceName = NameHelper::resourceClassName($endpoint->collection !== null && $endpoint->collection !== '' && $endpoint->collection !== '0' ? $endpoint->collection : $this->config()->fallbackResourceName);
         $className = NameHelper::requestClassName($endpoint->name);
 
         $classType = new ClassType($className);
 
         $classFile = new PhpFile();
         $namespace = $classFile
-            ->addNamespace("{$this->config->namespace}\\{$this->config->requestNamespaceSuffix}\\{$resourceName}");
+            ->addNamespace("{$this->config()->namespace}\\{$this->config()->requestNamespaceSuffix}\\{$resourceName}");
 
         $classType->setExtends(Request::class)
             ->setComment($endpoint->name)
@@ -97,7 +100,7 @@ class RequestGenerator extends Generator
         // Priority 2. - Body Parameters
         if ($endpoint->bodyParameters !== []) {
             $bodyParams = collect($endpoint->bodyParameters)
-                ->reject(fn (Parameter $parameter): bool => in_array($parameter->name, $this->config->ignoredBodyParams, true))
+                ->reject(fn (Parameter $parameter): bool => in_array($parameter->name, $this->config()->ignoredBodyParams, true))
                 ->values()
                 ->toArray();
 
@@ -111,7 +114,7 @@ class RequestGenerator extends Generator
         // Priority 3. - Query Parameters
         if ($endpoint->queryParameters !== []) {
             $queryParams = collect($endpoint->queryParameters)
-                ->reject(fn (Parameter $parameter): bool => in_array($parameter->name, $this->config->ignoredQueryParams, true))
+                ->reject(fn (Parameter $parameter): bool => in_array($parameter->name, $this->config()->ignoredQueryParams, true))
                 ->values()
                 ->toArray();
 
